@@ -1,0 +1,170 @@
+/* Style pour les éléments Markdown */
+.message.bot {
+    line-height: 1.6;
+}
+
+.message.bot p {
+    margin: 0.8em 0;
+}
+
+.message.bot strong {
+    font-weight: 600;
+}
+
+.message.bot em {
+    font-style: italic;
+}
+
+.message.bot code {
+    background-color: rgba(50, 50, 50, 0.8); /* Slightly darker background */
+    padding: 2px 6px; /* Adjust padding */
+    border-radius: 4px; /* Adjust border radius */
+    font-family: 'JetBrains Mono', monospace; /* Change font for better readability */
+    color: #ffffff; /* Distinctive text color */
+    font-size: 0.95em; /* Slightly smaller font size */
+}
+
+.message.bot pre {
+    background-color: rgba(30, 30, 30, 0.9); /* Darker background for better contrast */
+    padding: 1.2em; /* Increased padding for better readability */
+    border-radius: 10px; /* Slightly larger border radius */
+    overflow-x: auto;
+    margin: 1.5em 0; /* Plus d'espace avant/après les blocs de code */
+    color: #e6e6e6; /* Lighter text color */
+    font-size: 0.95em; /* Slightly smaller font size */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Ajoute une ombre légère */
+    border: 1px solid var(--border-color);
+    backdrop-filter: blur(8px);
+}
+
+/* Style des blocs de code */
+.code-block-wrapper {
+    position: relative;
+    margin: 1.5em 0; /* Plus d'espace autour des blocs de code */
+}
+
+.message.bot pre code {
+    background: transparent;
+    padding: 0;
+    font-family: 'JetBrains Mono', 'Fira Code', monospace;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.code-toolbar {
+    position: relative;
+}
+
+/* Styles pour les tableaux */
+.table-container {
+    width: 100%;
+    overflow-x: auto;
+    margin: 1.5em 0; /* Plus d'espace autour des tableaux */
+    border-radius: 6px;
+    background: rgba(32, 32, 32, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.message.bot table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    font-size: 0.9em;
+    margin: 0.5em 0;
+    line-height: 1.5; /* Meilleur espacement dans les tableaux */
+}
+
+.message.bot th {
+    background: rgba(45, 45, 45, 0.6);
+    color: rgba(255, 255, 255, 0.9);
+    font-weight: 500;
+    padding: 8px 12px;
+    text-align: left;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    border-right: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.message.bot td {
+    padding: 8px 12px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+    border-right: 1px solid rgba(255, 255, 255, 0.07);
+    color: rgba(255, 255, 255, 0.75);
+}
+
+.message.bot th:last-child,
+.message.bot td:last-child {
+    border-right: none;
+}
+
+.message.bot tr:last-child td {
+    border-bottom: none;
+}
+
+.message.bot tr:hover td {
+    background: rgba(255, 255, 255, 0.03);
+    transition: background-color 0.15s ease;
+}
+
+/* Supprimer les styles redondants */
+.message.bot .table-container {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+}
+
+/* Style minimal pour la scrollbar */
+.message.bot .table-container::-webkit-scrollbar {
+    height: 6px;
+}
+
+.message.bot .table-container::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.message.bot .table-container::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 3px;
+}
+
+/* Ajout de styles pour les listes */
+.message.bot ul, 
+.message.bot ol {
+    margin: 1em 0 1em 1.5em; /* Espacement des listes */
+    padding-left: 0.5em;
+}
+
+.message.bot li {
+    margin: 0.5em 0; /* Espacement entre les éléments de liste */
+}
+
+/* Ajout de styles pour les titres */
+.message.bot h1, 
+.message.bot h2, 
+.message.bot h3, 
+.message.bot h4 {
+    margin: 1.2em 0 0.8em 0; /* Plus d'espace autour des titres */
+    line-height: 1.2;
+}
+
+/* Ajout de styles pour les blockquotes */
+.message.bot blockquote {
+    margin: 1.2em 0;
+    padding: 0.8em 1.2em;
+    border-left: 4px solid rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 4px;
+}
+
+/* Ajout de styles pour les séparateurs horizontaux */
+.message.bot hr {
+    margin: 2em 0;
+    border: none;
+    height: 1px;
+    background: linear-gradient(
+        to right,
+        rgba(255, 255, 255, 0.05),
+        rgba(255, 255, 255, 0.2),
+        rgba(255, 255, 255, 0.05)
+    );
+}

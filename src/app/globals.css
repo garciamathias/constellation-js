@@ -1,0 +1,188 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #000000;
+  --foreground: #ffffff;
+  --container-bg: #000000;
+  --message-bg: rgba(32, 32, 32, 0.3);
+  --user-bubble-bg: rgba(32, 32, 32, 0.5);
+  --input-bg: rgba(32, 32, 32, 0.3);
+  --font-color: #ffffff;
+  --border-color: rgba(255, 255, 255, 0.1);
+  --input-border-radius: 12px;
+}
+
+body {
+  color: var(--font-color);
+  background: var(--background);
+  font-family: 'Inter', sans-serif;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  line-height: 1.5;
+  font-size: 17px;
+}
+
+/* Mise en page principale */
+/* ...existing code... */
+
+.chat-container {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Profile Menu Styles */
+.profile-menu {
+  position: fixed;
+  top: 15px;
+  right: 25px;
+  z-index: 1000;
+}
+
+.profile-image {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(32, 32, 32, 0.4);
+  backdrop-filter: blur(8px);
+}
+
+/* Chat Main Area */
+.chat-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  padding: 0 20%;
+}
+
+.chat-box {
+  flex: 1;
+  overflow-y: auto;
+  padding: 5px;
+}
+
+/* Message Container Styles */
+.message-container {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin: 25px 0;
+}
+
+.message-logo {
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+}
+
+.message-logo img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* Message Styles */
+.message {
+  padding: 10px 20px;
+  border-radius: 20px;
+  max-width: 85%;
+  font-size: 17px;
+  line-height: 1.6;
+}
+
+.message.user {
+  background-color: var(--user-bubble-bg);
+  color: white;
+  margin-left: auto;
+  backdrop-filter: blur(10px);
+  border-radius: var(--input-border-radius);
+}
+
+.message.assistant {
+  background-color: var(--message-bg);
+  color: var(--font-color);
+  backdrop-filter: blur(10px);
+}
+
+/* Input Area Styles */
+.input-container {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 20px 20%;
+  background: linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0) 100%);
+}
+
+.input-wrapper {
+  position: relative;
+  display: flex;
+  gap: 12px;
+}
+
+textarea {
+  width: 100%;
+  background-color: var(--input-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 20px;
+  padding: 15px 55px 15px 15px;
+  resize: none;
+  color: var(--font-color);
+  font-size: 17px;
+  min-height: 80px;
+  max-height: 80px;
+  line-height: 1.5;
+  backdrop-filter: blur(10px);
+}
+
+.input-buttons {
+  position: absolute;
+  right: 13px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  gap: 10px;
+}
+
+.input-buttons button {
+  background-color: rgba(32, 32, 32, 0.8);
+  border-radius: 12px;
+  border: none;
+  padding: 12px;
+  cursor: pointer;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.input-buttons button:hover:not(:disabled) {
+  background-color: rgba(45, 45, 45, 0.8);
+}
+
+.input-buttons img {
+  width: 30px;
+  height: 30px;
+  filter: invert(1);
+}
+
+.disclaimer-wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-top: 8px;
+}
+
+.disclaimer {
+  text-align: center;
+  color: rgb(149, 149, 149);
+  font-size: 12px;
+}

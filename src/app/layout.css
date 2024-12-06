@@ -1,0 +1,132 @@
+.chat-container {
+    width: 100%;
+    height: 100vh;
+    background-color: var(--container-bg);
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+.chat-header {
+    padding: 5px 10px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    background: transparent;
+    backdrop-filter: none;
+    border-bottom: none;
+    min-height: 46px;
+}
+
+.profile-menu {
+    position: fixed;
+    top: 15px;
+    right: 25px;
+    z-index: 1000;
+    backdrop-filter: blur(10px);
+}
+
+.profile-button {
+    cursor: pointer;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.profile-button:hover {
+    opacity: 0.9;
+    transform: scale(1.05);
+}
+
+.profile-image {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    background: rgba(32, 32, 32, 0.4);
+    backdrop-filter: blur(8px);
+    transition: border-color 0.2s ease;
+}
+
+.profile-button:hover .profile-image {
+    border-color: rgba(255, 255, 255, 0.25);
+}
+
+.dropdown-menu {
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;
+    background: rgba(32, 32, 32, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 8px;
+    display: none;
+    backdrop-filter: blur(10px);
+    min-width: 200px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.dropdown-menu.active {
+    display: block;
+    animation: menuFadeIn 0.2s ease;
+}
+
+@keyframes menuFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-5px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.dropdown-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px;
+    width: 100%;
+    color: rgba(255, 255, 255, 0.9);
+    background: transparent;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 14px;
+}
+
+.dropdown-item:hover {
+    background: rgba(255, 255, 255, 0.1);
+    transform: translateX(2px);
+}
+
+.menu-icon {
+    width: 16px;
+    height: 16px;
+    filter: invert(0);
+    opacity: 0.8;
+}
+
+.chat-main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    padding: 0 20%;
+}
+
+.chat-box {
+    flex: 1;
+    overflow-y: auto;
+    padding: 5px;
+}
+
+.logo-container {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.logo-container img {
+    width: 80px;
+    height: 80px;
+}
