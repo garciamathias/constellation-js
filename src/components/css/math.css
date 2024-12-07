@@ -1,0 +1,50 @@
+/* Styles pour les formules mathématiques */
+.mjx-chtml {
+    font-size: 1.1em !important;
+    color: rgba(255, 255, 255, 0.9) !important;
+    margin: 1em 0;
+}
+
+.mjx-chtml.MJXc-display {
+    margin: 1em 0 !important;
+    padding: 0.5em 0;
+    overflow-x: auto;
+    overflow-y: hidden;
+    background: rgba(30, 30, 30, 0.3);
+    border-radius: 4px;
+}
+
+/* Style pour les formules en ligne */
+.message.bot p .mjx-chtml {
+    margin: 0 0.2em !important;
+}
+
+/* Ajout des styles pour les formules MathJax en mode sombre */
+.MathJax {
+  color: rgba(255, 255, 255, 0.9) !important;
+}
+
+/* Amélioration du rendu des formules dans les paragraphes */
+.message.bot p .MathJax {
+    display: inline-block !important;
+    margin: 0 0.2em !important;
+    vertical-align: middle;
+}
+
+.message.bot p {
+    display: block !important;
+    margin: 0.8em 0 !important;
+}
+
+/* Ajustement pour les formules inline */
+.mjx-math {
+    padding: 1px 0 !important;
+    white-space: normal !important;
+}
+
+/* Style pour les formules en mode display */
+.MathJax_Display {
+  overflow-x: auto;
+  overflow-y: hidden;
+  margin: 1em 0 !important;
+}

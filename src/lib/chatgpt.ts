@@ -26,7 +26,7 @@ async function chatgpt(
     input: string,
     context?: Message[],
     instructions?: string,
-    model: string = 'gpt-4',
+    model: string = 'gpt-4o',
     streaming: boolean = false,
     temperature: number = 1,
     max_tokens: number = 2048,
@@ -113,13 +113,10 @@ async function chatgpt(
 async function* streamResponse(response: AsyncIterable<any>): AsyncGenerator<string, void, unknown> {
     try {
         for await (const chunk of response) {
-            if (chunk.choices[0].delta.content !== null) {
-                const content = chunk.choices[0].delta.content;
-                process.stdout.write(content);
-                yield content;
+            if (chunk.choices[0]?.delta?.content) {
+                yield chunk.choices[0].delta.content;
             }
         }
-        console.log();
     } catch (error) {
         const errorMsg = `Erreur pendant le streaming: ${error instanceof Error ? error.message : String(error)}`;
         console.error(errorMsg);
