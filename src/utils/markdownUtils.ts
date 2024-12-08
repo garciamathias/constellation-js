@@ -29,10 +29,10 @@ export const renderMarkdown = async (
 ): Promise<string> => {
   try {
     // Convertir les formules entre crochets en notation $$
-    content = content.replace(/\[(.*?)\]/g, '$$$$1$$');
+    content = content.replace(/\[(.*?)\]/g, '\\[$1\\]');
     
     // Protéger les formules inline
-    content = content.replace(/\((.*?)\)/g, '$$$1$$');
+    content = content.replace(/\((.*?)\)/g, '\\($1\\)');
 
     let html = marked(content);
     

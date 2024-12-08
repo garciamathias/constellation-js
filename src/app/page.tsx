@@ -4,6 +4,7 @@ import { useState, useRef, useEffect } from 'react';
 import Image from 'next/image';
 import { chatgpt } from '../lib/chatgpt';
 import { useMarkdownRenderer } from '@/hooks/useMarkdownRenderer';
+import { MessageRenderer } from '@/components/MessageRenderer'; // Add this import
 
 export default function Home() {
   const [messages, setMessages] = useState<{role: string, content: string}[]>([]);
@@ -22,6 +23,9 @@ export default function Home() {
       ...prev.slice(0, -1),
       { role: 'assistant', content: renderedContent }
     ]);
+    if (window.MathJax) {
+      window.MathJax.typesetPromise();
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -47,7 +51,13 @@ export default function Home() {
         }
       } else {
         const renderedContent = await renderContent(response);
-        setMessages(prev => [...prev, { role: 'assistant', content: renderedContent }]);
+        setMessages(prev => [
+          ...prev,
+          { role: 'assistant', content: renderedContent }
+        ]);
+        if (window.MathJax) {
+          window.MathJax.typesetPromise();
+        }
       }
     } catch (error) {
       console.error('ChatGPT Error:', error);
@@ -126,7 +136,7 @@ export default function Home() {
                 </div>
               )}
               <div className={`message ${msg.role}`}>
-                {msg.content}
+                <MessageRenderer content={msg.content} />
               </div>
             </div>
           ))}

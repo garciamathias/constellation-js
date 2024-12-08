@@ -115,6 +115,9 @@ async function* streamResponse(response: AsyncIterable<any>): AsyncGenerator<str
         for await (const chunk of response) {
             if (chunk.choices[0]?.delta?.content) {
                 yield chunk.choices[0].delta.content;
+                if (window.MathJax) {
+                    window.MathJax.typesetPromise();
+                }
             }
         }
     } catch (error) {
