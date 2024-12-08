@@ -18,14 +18,10 @@ export default function Home() {
 
   const handleStreamingUpdate = async (newContent: string) => {
     currentMessageRef.current = newContent;
-    const renderedContent = await renderContent(newContent, messageContainerRef.current || undefined);
     setMessages(prev => [
       ...prev.slice(0, -1),
-      { role: 'assistant', content: renderedContent }
+      { role: 'assistant', content: newContent }
     ]);
-    if (window.MathJax) {
-      window.MathJax.typesetPromise();
-    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -46,18 +42,13 @@ export default function Home() {
         setIsStreaming(true);
         setMessages(prev => [...prev, { role: 'assistant', content: '' }]);
         
+        let accumulatedContent = '';
         for await (const chunk of response) {
-          await handleStreamingUpdate(currentMessageRef.current + chunk);
+          accumulatedContent += chunk;
+          await handleStreamingUpdate(accumulatedContent);
         }
       } else {
-        const renderedContent = await renderContent(response);
-        setMessages(prev => [
-          ...prev,
-          { role: 'assistant', content: renderedContent }
-        ]);
-        if (window.MathJax) {
-          window.MathJax.typesetPromise();
-        }
+        setMessages(prev => [...prev, { role: 'assistant', content: response }]);
       }
     } catch (error) {
       console.error('ChatGPT Error:', error);

@@ -1,54 +1,30 @@
-import { useCallback, useEffect } from 'react';
-import { renderMarkdown } from '../utils/markdownUtils';
-import { protectLatexFormulas, containsLatex, renderMathJax } from '../utils/mathUtils';
+import { RenderingService } from '../services/RenderingService';
 
 export const useMarkdownRenderer = () => {
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const initMathJax = async () => {
-        try {
-          // Attendre que MathJax soit complètement chargé
-          while (!window.MathJax?.startup?.promise) {
-            await new Promise(resolve => setTimeout(resolve, 100));
-          }
-          
-          await window.MathJax.startup.promise;
-          console.log('MathJax ready');
-        } catch (error) {
-          console.error('MathJax initialization error:', error);
-        }
-      };
+  const renderingService = RenderingService.getInstance();
 
-      initMathJax();
-    }
-  }, []);
-
-  const renderContent = useCallback(async (content: string, element?: HTMLElement): Promise<string> => {
+  const renderContent = async (content: string, element?: HTMLElement) => {
+    if (!content) return '';
+    
     try {
-      const hasLatex = containsLatex(content);
-      const { text, mappings } = hasLatex ? protectLatexFormulas(content) : { text: content, mappings: [] };
-
-      let html = await renderMarkdown(text, mappings);
-
-      if (element && hasLatex && typeof window !== 'undefined') {
-        element.innerHTML = html;
-        
-        // S'assurer que MathJax est chargé avant de l'utiliser
-        if (window.MathJax?.typesetPromise) {
-          try {
-            await window.MathJax.typesetPromise([element]);
-          } catch (error) {
-            console.error('MathJax typesetting error:', error);
-          }
+      const renderedContent = await renderingService.render(content);
+      
+      if (element) {
+        element.innerHTML = renderedContent;
+        if (window.MathJax) {
+          await window.MathJax.typesetPromise([element]);
+        }
+        if (window.Prism) {
+          window.Prism.highlightAllUnder(element);
         }
       }
-
-      return html;
+      
+      return renderedContent;
     } catch (error) {
-      console.error('Error in renderContent:', error);
+      console.error('Error rendering content:', error);
       return content;
     }
-  }, []);
+  };
 
   return { renderContent };
 };
