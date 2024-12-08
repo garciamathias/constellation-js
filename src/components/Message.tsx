@@ -9,14 +9,18 @@ interface MessageProps {
 }
 
 export const Message = memo(({ content, role, isStreaming = false }: MessageProps) => {
+  const isBot = role === 'bot';
+  
   return (
     <div className={`message-container ${role}-container`}>
-      {role === 'bot' && (
+      {isBot && (
         <div className="message-logo">
           <Image src="/static/images/logo.png" alt="Logo Constellation" width={40} height={40} />
         </div>
       )}
-      <MarkdownContent content={content} className={`message ${role}`} />
+      <div className={`message ${role}`}>
+        <MarkdownContent content={content} />
+      </div>
     </div>
   );
 }, (prevProps, nextProps) => {

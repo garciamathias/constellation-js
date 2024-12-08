@@ -4,14 +4,13 @@ import { useState, useRef, useEffect } from 'react';
 import Image from 'next/image';
 import { chatgpt } from '../lib/chatgpt';
 import { useMarkdownRenderer } from '@/hooks/useMarkdownRenderer';
-import { MessageRenderer } from '@/components/MessageRenderer'; // Add this import
+import { MessageRenderer } from '@/components/MessageRenderer';
 
 export default function Home() {
   const [messages, setMessages] = useState<{role: string, content: string}[]>([]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [isStreaming, setIsStreaming] = useState(false);
-  const [showDropdown, setShowDropdown] = useState(false);
   const currentMessageRef = useRef('');
   const { renderContent } = useMarkdownRenderer();
   const messageContainerRef = useRef<HTMLDivElement>(null);
@@ -71,46 +70,8 @@ export default function Home() {
     }
   };
 
-  const handleLogout = async () => {
-    try {
-      // Implement your logout logic here
-      window.location.href = '/logout';
-    } catch (error) {
-      alert('Erreur lors de la déconnexion');
-    }
-  };
-
   return (
     <div className="chat-container">
-      <div className="profile-menu">
-        <div 
-          className="profile-button" 
-          onClick={() => setShowDropdown(!showDropdown)}
-        >
-          <Image
-            src="/default-avatar.jpeg"
-            alt="Profile"
-            className="profile-image"
-            width={40}
-            height={40}
-          />
-        </div>
-        {showDropdown && (
-          <div className="dropdown-menu">
-            <button onClick={handleLogout} className="dropdown-item">
-              <Image 
-                src="/icons/logout-icon.png" 
-                alt="Logout" 
-                width={20} 
-                height={20} 
-                className="menu-icon" 
-              />
-              Se déconnecter
-            </button>
-          </div>
-        )}
-      </div>
-      
       <div className="chat-main">
         <div id="chat-box" className="chat-box" ref={messageContainerRef}>
           
