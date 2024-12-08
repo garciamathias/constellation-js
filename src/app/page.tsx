@@ -122,11 +122,6 @@ export default function Home() {
       
       <div className="chat-main">
         <div id="chat-box" className="chat-box" ref={messageContainerRef}>
-          {messages.length === 0 && (
-            <div className="text-center text-gray-500 mt-8">
-              Démarrez une conversation en écrivant un message ci-dessous
-            </div>
-          )}
           
           {messages.map((msg, index) => (
             <div key={index} className={`message-container ${msg.role}-container`}>

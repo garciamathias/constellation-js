@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react';
-import { useMarkdownRenderer } from '../hooks/useMarkdownRenderer';
+import { useRenderer } from '../hooks/useRenderer';
+import Image from 'next/image';
 
 interface MessageProps {
   content: string;
@@ -8,25 +9,22 @@ interface MessageProps {
 
 export const Message = ({ content, role }: MessageProps) => {
   const messageRef = useRef<HTMLDivElement>(null);
-  const { renderContent } = useMarkdownRenderer();
+  const { render } = useRenderer();
 
   useEffect(() => {
-    const renderMessage = async () => {
-      if (messageRef.current && content) {
-        const renderedContent = await renderContent(content, messageRef.current);
-        messageRef.current.innerHTML = renderedContent;
-        if (window.MathJax) {
-          window.MathJax.typesetPromise([messageRef.current]);
-        }
-      }
-    };
-
-    renderMessage();
-  }, [content, renderContent]);
+    if (messageRef.current && content) {
+      render(content, messageRef.current);
+    }
+  }, [content, render]);
 
   return (
-    <div className={`message ${role}`}>
-      <div ref={messageRef} className="message-content" />
+    <div className={`message-container ${role}-container`}>
+      {role === 'bot' && (
+        <div className="message-logo">
+          <Image src="/static/images/logo.png" alt="Logo Constellation" width={40} height={40} />
+        </div>
+      )}
+      <div ref={messageRef} className={`message ${role}`} />
     </div>
   );
 };
