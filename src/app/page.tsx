@@ -89,11 +89,11 @@ export default function Home() {
           ))}
           
           {isLoading && !isStreaming && (
-            <div className="message-container assistant-container">
+            <div className="message-container assistant-container reflection-message">
               <div className="message-logo">
                 <Image src="/logo.png" alt="Assistant" width={40} height={40} />
               </div>
-              <div className="message assistant">
+              <div className="message assistant reflection-text">
                 Réflexion en cours...
               </div>
             </div>

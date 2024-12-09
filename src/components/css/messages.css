@@ -32,6 +32,16 @@
     margin: 15px 0; 
 }
 
+/* Ajout du style pour le conteneur du message de réflexion */
+.message-container.assistant-container:only-child {
+    margin-top: 40px;
+}
+
+/* Dans messages.css, ajouter : */
+.message.assistant.reflection-text {
+    padding-top: 20px;
+}
+
 /* Style pour le conteneur du logo */
 .message-logo {
     flex-shrink: 0;
@@ -47,6 +57,7 @@
     height: 100%;
     object-fit: contain;
 }
+
 
 /* Alignement des messages utilisateur à droite */
 .user-container {
