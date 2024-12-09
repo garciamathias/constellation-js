@@ -16,17 +16,18 @@
 .message.bot {
     background: transparent;
     padding: 0;
-    margin: 0; 
+    margin: 0;
     max-width: 85%;
     color: rgba(255, 255, 255, 0.9);
     font-size: 17px;
     line-height: 1.6;
+    display: block;
 }
 
 /* Container pour le message et le logo */
 .message-container {
     display: flex;
-    align-items: flex-start;
+    align-items: flex-start; /* Aligner les éléments en haut */
     gap: 12px;
     margin: 15px 0; 
 }
@@ -36,6 +37,9 @@
     flex-shrink: 0;
     width: 40px;
     height: 40px;
+    transform: translateY(3px); /* Ajustement fin pour aligner avec la première ligne */
+    padding: 20px 0 0 0;
+    margin: 0;
 }
 
 .message-logo img {
