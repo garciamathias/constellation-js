@@ -28,7 +28,7 @@
     display: flex;
     align-items: flex-start;
     gap: 12px;
-    margin: 25px 0;
+    margin: 15px 0; 
 }
 
 /* Style pour le conteneur du logo */
@@ -79,4 +79,10 @@
 /* Ajuster les marges du premier paragraphe */
 .message.bot > p:first-child {
     margin-top: 0;
+}
+
+/* Réduire les marges des paragraphes dans les messages */
+.message.user p,
+.message.bot p {
+    margin: 0;  /* Enlève les marges par défaut des paragraphes */
 }
