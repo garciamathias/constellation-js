@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { chatgpt } from '../lib/chatgpt';
 import { useMarkdownRenderer } from '@/hooks/useMarkdownRenderer';
 import { MessageRenderer } from '@/components/MessageRenderer';
+import { useAutoScroll } from '@/hooks/useAutoScroll';
 
 export default function Home() {
   const [messages, setMessages] = useState<{role: string, content: string}[]>([]);
@@ -14,6 +15,11 @@ export default function Home() {
   const currentMessageRef = useRef('');
   const { renderContent } = useMarkdownRenderer();
   const messageContainerRef = useRef<HTMLDivElement>(null);
+  const { shouldAutoScroll, scrollToBottom, resetStreamingState, forceScrollToBottom } = useAutoScroll(messageContainerRef);
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
 
   const handleStreamingUpdate = async (newContent: string) => {
     currentMessageRef.current = newContent;
@@ -21,25 +27,30 @@ export default function Home() {
       ...prev.slice(0, -1),
       { role: 'assistant', content: newContent }
     ]);
+    scrollToBottom(true);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!input.trim()) return;
 
+    resetStreamingState();
     const userMessage = { role: 'user', content: input };
     setMessages(prev => [...prev, userMessage]);
     setInput('');
     setIsLoading(true);
     currentMessageRef.current = '';
+    forceScrollToBottom(); // Force le scroll au début
 
     try {
       const response = await chatgpt(input, undefined, undefined, 'gpt-4o', true);
+      forceScrollToBottom(); // Force le scroll avant de commencer le streaming
       
       if (typeof response !== 'string') {
         setIsLoading(false);
         setIsStreaming(true);
         setMessages(prev => [...prev, { role: 'assistant', content: '' }]);
+        forceScrollToBottom(); // Force le scroll au début du streaming
         
         let accumulatedContent = '';
         for await (const chunk of response) {
@@ -48,6 +59,7 @@ export default function Home() {
         }
       } else {
         setMessages(prev => [...prev, { role: 'assistant', content: response }]);
+        forceScrollToBottom(); // Force le scroll pour les réponses non streamées
       }
     } catch (error) {
       console.error('ChatGPT Error:', error);
@@ -58,6 +70,7 @@ export default function Home() {
     } finally {
       setIsLoading(false);
       setIsStreaming(false);
+      forceScrollToBottom(); // Force le scroll à la fin
     }
   };
 
