@@ -43,7 +43,7 @@ async function chatgpt(
         
         const systemMessage: Message = {
             role: 'system',
-            content: "You are Constellation, a helpful assistant created by Mathias Garcia."
+            content: "You are Constellation, a helpful assistant created by Mathias Garcia!."
         };
         
         if (instructions) {

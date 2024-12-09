@@ -26,7 +26,7 @@ export default function ResetPassword() {
         <div className="auth-container">
             <div className="auth-form">
                 <div className="logo-container">
-                    <img src="/static/images/logo.png" alt="Constellation Logo" />
+                    <img src="/logo.png" alt="Constellation Logo" />
                 </div>
                 <h2>Réinitialisation du mot de passe</h2>
                 <form onSubmit={handleSubmit}>

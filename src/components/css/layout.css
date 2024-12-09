@@ -5,6 +5,8 @@
     display: flex;
     flex-direction: column;
     position: relative;
+    min-width: 300px;
+    overflow-x: hidden;
 }
 
 .chat-header {
@@ -23,13 +25,41 @@
     display: flex;
     flex-direction: column;
     overflow: hidden;
-    padding: 0 20%;
+    padding: 0;
+    width: 100%;
+    max-width: 1800px;
+    margin: 0 auto;
+    min-width: 300px;
 }
 
 .chat-box {
     flex: 1;
     overflow-y: auto;
-    padding: 5px;
+    padding: 5px 15%;
+    width: 100%;
+    box-sizing: border-box;
+    word-wrap: break-word;
+    overflow-x: hidden;
+    position: relative; /* Pour le positionnement absolu des logos */
+}
+
+/* Ajuster les media queries pour garder de l'espace pour les logos */
+@media (max-width: 1400px) {
+    .chat-box {
+        padding: 5px 5%;
+    }
+}
+
+@media (max-width: 1200px) {
+    .chat-box {
+        padding: 5px 10%;
+    }
+}
+
+@media (max-width: 768px) {
+    .chat-box {
+        padding: 5px 16px;
+    }
 }
 
 .logo-container {

@@ -23,21 +23,9 @@ export default function Register() {
         try {
             const user = await registerWithFirebase(email, password);
             
-            const response = await fetch('/register', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ 
-                    email,
-                    uid: user.uid
-                })
-            });
-            
-            if (response.ok) {
-                sessionStorage.setItem('ignoreAuthChange', 'true');
-                router.push('/');
-            }
+            sessionStorage.setItem('ignoreAuthChange', 'true');
+            sessionStorage.setItem('user', JSON.stringify(user));
+            router.push('/');
         } catch (error) {
             setError(error instanceof Error ? error.message : 'Erreur lors de l\'inscription');
         }
@@ -47,7 +35,7 @@ export default function Register() {
         <div className="auth-container">
             <div className="auth-form">
                 <div className="logo-container">
-                    <img src="/static/images/logo.png" alt="Constellation Logo" />
+                    <img src="/logo.png" alt="Constellation Logo" />
                 </div>
                 <h2>Inscription</h2>
                 {error && <div style={{ color: 'red', textAlign: 'center', marginBottom: '15px' }}>{error}</div>}
@@ -73,7 +61,7 @@ export default function Register() {
                         placeholder="Confirmez le mot de passe"
                         required
                     />
-                    <button type="submit">S'inscrire</button>
+                    <button type="submit">S&apos;inscrire</button>
                 </form>
                 <p>Déjà inscrit ? <Link href="/login">Se connecter</Link></p>
             </div>

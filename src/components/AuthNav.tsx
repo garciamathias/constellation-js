@@ -1,11 +1,25 @@
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { logoutFromFirebase } from '@/lib/firebase';
 
 export const AuthNav = ({ userEmail }: { userEmail: string }) => {
     const [showDropdown, setShowDropdown] = useState(false);
+    const menuRef = useRef<HTMLDivElement>(null);
     const router = useRouter();
+
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+                setShowDropdown(false);
+            }
+        };
+
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, []);
 
     const handleLogout = async () => {
         try {
@@ -17,13 +31,15 @@ export const AuthNav = ({ userEmail }: { userEmail: string }) => {
     };
 
     return (
-        <div className="profile-menu">
+        <div className="profile-menu" ref={menuRef}>
             <div 
                 className="profile-button" 
                 onClick={() => setShowDropdown(!showDropdown)}
+                role="button"
+                tabIndex={0}
             >
                 <Image 
-                    src="/static/images/default-avatar.jpeg" 
+                    src="/default-avatar.jpeg" 
                     alt="Profile" 
                     width={40} 
                     height={40} 
@@ -32,16 +48,26 @@ export const AuthNav = ({ userEmail }: { userEmail: string }) => {
             </div>
             {showDropdown && (
                 <div className="dropdown-menu">
-                    <div className="user-email">{userEmail}</div>
+                    <div className="user-info">
+                        <Image 
+                            src="/default-avatar.jpeg" 
+                            alt="Profile" 
+                            width={60} 
+                            height={60} 
+                            className="profile-image-large"
+                        />
+                        <span className="user-email">{userEmail}</span>
+                    </div>
+                    <div className="dropdown-divider"></div>
                     <button onClick={handleLogout} className="dropdown-item">
                         <Image 
-                            src="/static/images/icons/logout-icon.png" 
+                            src="/icons/logout-icon.png" 
                             alt="Logout" 
                             width={20} 
                             height={20} 
                             className="menu-icon"
                         />
-                        Se déconnecter
+                        <span>Se déconnecter</span>
                     </button>
                 </div>
             )}

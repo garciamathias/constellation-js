@@ -27,8 +27,13 @@ export default function Home() {
   const [currentChatId, setCurrentChatId] = useState<string | null>(null);
 
   useEffect(() => {
-    if (!loading && !user) {
-      router.push('/login');
+    if (!loading) {
+      if (!user) {
+        const storedUser = sessionStorage.getItem('user');
+        if (!storedUser) {
+          router.push('/login');
+        }
+      }
     }
   }, [loading, user, router]);
 

@@ -16,21 +16,9 @@ export default function Login() {
         try {
             const user = await loginWithFirebase(email, password);
             
-            const response = await fetch('/login', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ 
-                    email,
-                    uid: user.uid
-                })
-            });
-            
-            if (response.ok) {
-                sessionStorage.setItem('ignoreAuthChange', 'true');
-                window.location.href = '/';
-            }
+            sessionStorage.setItem('ignoreAuthChange', 'true');
+            sessionStorage.setItem('user', JSON.stringify(user));
+            router.push('/');
         } catch (error) {
             setError(error instanceof Error ? error.message : 'Erreur de connexion');
         }
@@ -61,7 +49,7 @@ export default function Login() {
                     />
                     <button type="submit">Se connecter</button>
                 </form>
-                <p>Pas encore de compte ? <Link href="/register">S'inscrire</Link></p>
+                <p>Pas encore de compte ? <Link href="/register">S&apos;inscrire</Link></p>
                 <p>Mot de passe oublié ? <Link href="/reset-password">Réinitialiser</Link></p>
             </div>
         </div>
