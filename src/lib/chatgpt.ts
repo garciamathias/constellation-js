@@ -1,5 +1,5 @@
+import { OpenAI } from 'openai';
 import { openai_client as OpenAIClient, logger } from './config';
-import type { ChatCompletionCreateParams } from 'openai/resources/chat';
 
 // Définition des types
 interface Message {
@@ -7,20 +7,15 @@ interface Message {
     content: string;
 }
 
-interface ResponseFormat {
-    type: string;
+interface ResponseFormatText {
+    type: "text";
 }
 
-type CompletionParams = ChatCompletionCreateParams & {
-    stream: boolean;
-    temperature: number;
-    max_tokens?: number;
-    max_completion_tokens?: number;
-    top_p: number;
-    frequency_penalty: number;
-    presence_penalty: number;
-    response_format: ResponseFormat;
-};
+interface ResponseFormatJSON {
+    type: "json_object";
+}
+
+type ResponseFormat = ResponseFormatText | ResponseFormatJSON;
 
 async function chatgpt(
     input: string,
@@ -46,28 +41,18 @@ async function chatgpt(
     try {
         const messages: Message[] = [];
         
-        if (model !== 'o1-preview') {
-            const systemMessage: Message = {
-                role: 'system',
-                content: "You are Constellation, a helpful assistant created by Mathias Garcia."
-            };
-            
-            if (instructions) {
-                systemMessage.content += ` Tu vas respecter radicalement ces instructions : ${instructions}`;
-            }
-            messages.push(systemMessage);
+        const systemMessage: Message = {
+            role: 'system',
+            content: "You are Constellation, a helpful assistant created by Mathias Garcia."
+        };
+        
+        if (instructions) {
+            systemMessage.content += ` Tu vas respecter radicalement ces instructions : ${instructions}`;
         }
+        messages.push(systemMessage);
 
         if (context) {
-            context.forEach(msg => {
-                const content = Array.isArray(msg.content) 
-                    ? msg.content[0].text 
-                    : msg.content;
-                messages.push({
-                    role: msg.role,
-                    content: content
-                });
-            });
+            messages.push(...context);
         }
 
         if (!messages.length || messages[messages.length - 1].content !== input) {
@@ -79,29 +64,34 @@ async function chatgpt(
 
         console.info(`Messages envoyés: ${messages.length}`);
         
-        const completionParams: CompletionParams = {
+        const baseParams = {
             model,
             messages,
-            stream: streaming,
             temperature,
+            max_tokens,
             top_p,
             frequency_penalty,
             presence_penalty,
             response_format
         };
 
-        if (model === 'o1-preview') {
-            completionParams.max_completion_tokens = max_tokens;
-        } else {
-            completionParams.max_tokens = max_tokens;
-        }
-
-        const response = await OpenAIClient.chat.completions.create(completionParams);
-        
         if (streaming) {
-            return streamResponse(response);
+            const stream = await OpenAIClient.chat.completions.create({
+                ...baseParams,
+                stream: true,
+            });
+            return streamResponse(stream);
         } else {
-            return response.choices[0].message.content;
+            const response = await OpenAIClient.chat.completions.create({
+                ...baseParams,
+                stream: false,
+            });
+            
+            const content = response.choices[0].message.content;
+            if (content === null) {
+                throw new Error("Response content is null");
+            }
+            return content;
         }
     } catch (error) {
         const errorMsg = `Erreur OpenAI: ${error instanceof Error ? error.message : String(error)}`;
@@ -110,13 +100,13 @@ async function chatgpt(
     }
 }
 
-async function* streamResponse(response: AsyncIterable<any>): AsyncGenerator<string, void, unknown> {
+async function* streamResponse(stream: AsyncIterable<OpenAI.Chat.ChatCompletionChunk>): AsyncGenerator<string, void, unknown> {
     try {
-        for await (const chunk of response) {
+        for await (const chunk of stream) {
             if (chunk.choices[0]?.delta?.content) {
                 yield chunk.choices[0].delta.content;
-                if (window.MathJax) {
-                    window.MathJax.typesetPromise();
+                if ((window as any).MathJax) {
+                    (window as any).MathJax.typesetPromise([]);
                 }
             }
         }

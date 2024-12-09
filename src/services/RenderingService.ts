@@ -59,7 +59,7 @@ export class RenderingService {
     async render(content: string): Promise<string> {
         try {
             const protectedContent = this.protectLatexFormulas(content);
-            const htmlContent = marked(protectedContent);
+            const htmlContent = await marked(protectedContent);
 
             const tempDiv = document.createElement('div');
             tempDiv.innerHTML = htmlContent;
