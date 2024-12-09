@@ -1,11 +1,17 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
+import { useRouter } from 'next/navigation'; // Changed from next/router
+import { collection, addDoc, query, orderBy, getDocs, doc, updateDoc } from '@firebase/firestore';
+import { db } from '@/lib/firebase';
+import { useAuth } from '@/hooks/useAuth';
+import { AuthNav } from '@/components/AuthNav';
 import Image from 'next/image';
 import { chatgpt } from '../lib/chatgpt';
 import { useMarkdownRenderer } from '@/hooks/useMarkdownRenderer';
 import { MessageRenderer } from '@/components/MessageRenderer';
 import { useAutoScroll } from '@/hooks/useAutoScroll';
+import { incrementUserMessageCount, incrementUserChatCount } from '@/lib/firebase';
 
 export default function Home() {
   const [messages, setMessages] = useState<{role: string, content: string}[]>([]);
@@ -16,10 +22,87 @@ export default function Home() {
   const { renderContent } = useMarkdownRenderer();
   const messageContainerRef = useRef<HTMLDivElement>(null);
   const { shouldAutoScroll, scrollToBottom, resetStreamingState, forceScrollToBottom } = useAutoScroll(messageContainerRef);
+  const { user, loading } = useAuth();
+  const router = useRouter();
+  const [currentChatId, setCurrentChatId] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!loading && !user) {
+      router.push('/login');
+    }
+  }, [loading, user, router]);
 
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
+
+  // Load previous messages on component mount or when chat ID changes
+  useEffect(() => {
+    const loadMessages = async () => {
+      if (!currentChatId || !user) return;
+      
+      const messagesRef = collection(db, "chats", currentChatId, "messages");
+      const q = query(messagesRef, orderBy("message_order", "asc"));
+      const querySnapshot = await getDocs(q);
+      
+      const loadedMessages = querySnapshot.docs.map(doc => ({
+        role: doc.data().role,
+        content: doc.data().content
+      }));
+      
+      setMessages(loadedMessages);
+    };
+
+    loadMessages();
+  }, [currentChatId, user]);
+
+  // Create a new chat if none exists
+  useEffect(() => {
+    if (user && !currentChatId) {
+      createNewChat();
+    }
+  }, [user]);
+
+  const createNewChat = async () => {
+    if (!user) return;
+    try {
+      const chatRef = await addDoc(collection(db, "chats"), {
+        userId: user.uid,
+        created_at: new Date(),
+        last_updated: new Date()
+      });
+      setCurrentChatId(chatRef.id);
+      await incrementUserChatCount(user.uid, chatRef.id);
+      return chatRef.id;
+    } catch (error) {
+      console.error('Error creating chat:', error);
+    }
+  };
+
+  const addMessageToFirestore = async (content: string, role: string) => {
+    if (!currentChatId || !user) return;
+
+    const messagesRef = collection(db, "chats", currentChatId, "messages");
+    const messageCount = (await getDocs(query(messagesRef, orderBy("message_order", "desc")))).size;
+
+    await addDoc(messagesRef, {
+      content,
+      role,
+      message_order: messageCount + 1,
+      timestamp: new Date()
+    });
+
+    // Increment message count for user
+    if (role === 'user') {
+      await incrementUserMessageCount(user.uid);
+    }
+
+    // Update chat's last_updated timestamp
+    const chatRef = doc(db, "chats", currentChatId);
+    await updateDoc(chatRef, {
+      last_updated: new Date()
+    });
+  };
 
   const handleStreamingUpdate = async (newContent: string) => {
     currentMessageRef.current = newContent;
@@ -32,34 +115,58 @@ export default function Home() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!input.trim()) return;
+    if (!input.trim() || !user) return;
 
     resetStreamingState();
     const userMessage = { role: 'user', content: input };
+    
+    // Update UI
     setMessages(prev => [...prev, userMessage]);
     setInput('');
     setIsLoading(true);
     currentMessageRef.current = '';
-    forceScrollToBottom(); // Force le scroll au début
+    forceScrollToBottom();
 
     try {
-      const response = await chatgpt(input, undefined, undefined, 'gpt-4o', true);
-      forceScrollToBottom(); // Force le scroll avant de commencer le streaming
-      
+      // Ensure chat exists
+      if (!currentChatId) {
+        await createNewChat();
+      }
+
+      // Add user message to Firestore
+      await addMessageToFirestore(input, 'user');
+
+      // Get conversation history for context
+      const conversationHistory = messages.map(msg => ({
+        role: msg.role === 'user' ? 'user' : 'assistant',
+        content: msg.content
+      }));
+
+      // Send request with context
+      const response = await chatgpt(
+        input,
+        conversationHistory,
+        undefined,
+        'gpt-4o',
+        true
+      );
+
       if (typeof response !== 'string') {
         setIsLoading(false);
         setIsStreaming(true);
         setMessages(prev => [...prev, { role: 'assistant', content: '' }]);
-        forceScrollToBottom(); // Force le scroll au début du streaming
         
         let accumulatedContent = '';
         for await (const chunk of response) {
           accumulatedContent += chunk;
           await handleStreamingUpdate(accumulatedContent);
         }
+        
+        // Store complete assistant response
+        await addMessageToFirestore(accumulatedContent, 'assistant');
       } else {
         setMessages(prev => [...prev, { role: 'assistant', content: response }]);
-        forceScrollToBottom(); // Force le scroll pour les réponses non streamées
+        await addMessageToFirestore(response, 'assistant');
       }
     } catch (error) {
       console.error('ChatGPT Error:', error);
@@ -83,8 +190,17 @@ export default function Home() {
     }
   };
 
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (!user) {
+    return null;
+  }
+
   return (
     <div className="chat-container">
+      <AuthNav userEmail={user.email || ''} />
       <div className="chat-main">
         <div id="chat-box" className="chat-box" ref={messageContainerRef}>
           
