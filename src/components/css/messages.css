@@ -12,7 +12,6 @@
     backdrop-filter: blur(10px);
     word-wrap: break-word;
     overflow-wrap: break-word;
-    white-space: pre-wrap;
 }
 
 /* Style pour la réponse du modèle (sans bulle) */
@@ -27,7 +26,6 @@
     display: block;
     word-wrap: break-word;
     overflow-wrap: break-word;
-    white-space: pre-wrap;
 }
 
 /* Container pour le message et le logo */
@@ -39,6 +37,7 @@
     flex-wrap: wrap;
     min-width: 0;
     position: relative;
+    padding-left: 60px; /* Espace pour le logo */
 }
 
 
@@ -50,13 +49,13 @@
 /* Style pour le conteneur du logo */
 .message-logo {
     position: absolute;
-    left: -60px; /* Ajustez selon l'espacement désiré */
+    left: 0;
     width: 40px;
     height: 40px;
     flex-shrink: 0;
     margin: 0;
     padding: 0;
-    top: 15px; /* Ajouter cette ligne pour décaler le logo vers le bas */
+    top: 15px; /* Modifié de 0 à 30px */
 }
 
 .message-logo img {
@@ -69,7 +68,6 @@
 /* Alignement des messages utilisateur à droite */
 .user-container {
     justify-content: flex-end;
-    padding-right: 60px; /* Pour équilibrer visuellement avec le logo */
 }
 
 /* Cache le logo pour les messages utilisateur */
@@ -115,6 +113,56 @@
     .message.bot {
         max-width: 90%;
     }
+
+    .message-container {
+        padding-left: 52px; /* Espace pour le logo */
+    }
+}
+
+@media (max-width: 480px) {
+    .message-container {
+        padding-left: 45px; /* Réduit légèrement l'espace mais garde le logo */
+    }
+
+    .message.user,
+    .message.bot {
+        max-width: 95%; /* Augmentation de la largeur maximale */
+        width: calc(100% - 45px); /* Largeur dynamique en tenant compte du padding */
+    }
+
+    .user-container {
+        padding-right: 10px; /* Réduire le padding droit */
+    }
+}
+
+@media (max-width: 375px) {
+    .message.user,
+    .message.bot {
+        width: calc(100% - 20px); /* Réduire encore plus l'espace sur les côtés */
+        max-width: 100%;
+    }
+
+    .message-container {
+        margin: 10px 0; /* Réduire les marges verticales */
+    }
+
+    .message-logo {
+        display: none; /* Cache le logo sur les petits écrans */
+    }
+    
+    .user-container {
+        padding-right: 0;
+    }
+}
+
+@media (max-width: 320px) {
+    .message-logo {
+        display: none;
+    }
+
+    .message-container {
+        padding-left: 0;
+    }
 }
 
 /* Ajout de styles pour les blocs de code */
@@ -131,12 +179,22 @@
 }
 
 /* Ajuster la position du logo pour les petits écrans */
-@media (max-width: 1400px) {
+@media (max-width: 375px) {
     .message-logo {
         display: none; /* Cache le logo sur les petits écrans */
     }
     
     .user-container {
         padding-right: 0;
+    }
+}
+
+@media (max-width: 320px) {
+    .message-logo {
+        display: none;
+    }
+
+    .message-container {
+        padding-left: 0;
     }
 }

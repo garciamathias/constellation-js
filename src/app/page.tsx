@@ -3,9 +3,10 @@
 import { useState, useRef, useEffect } from 'react';
 import { useRouter } from 'next/navigation'; // Changed from next/router
 import { collection, addDoc, query, orderBy, getDocs, doc, updateDoc } from '@firebase/firestore';
-import { db } from '@/lib/firebase';
+import { db, generateChatTitle, updateChatTitle } from '@/lib/firebase'; // Add these imports
 import { useAuth } from '@/hooks/useAuth';
 import { AuthNav } from '@/components/AuthNav';
+import { ChatList } from '@/components/ChatList'; // Add this import
 import Image from 'next/image';
 import { chatgpt } from '../lib/chatgpt';
 import { useMarkdownRenderer } from '@/hooks/useMarkdownRenderer';
@@ -74,7 +75,8 @@ export default function Home() {
       const chatRef = await addDoc(collection(db, "chats"), {
         userId: user.uid,
         created_at: new Date(),
-        last_updated: new Date()
+        last_updated: new Date(),
+        title: "Nouvelle conversation"
       });
       setCurrentChatId(chatRef.id);
       await incrementUserChatCount(user.uid, chatRef.id);
@@ -82,6 +84,12 @@ export default function Home() {
     } catch (error) {
       console.error('Error creating chat:', error);
     }
+  };
+
+  const handleChatSelect = async (chatId: string) => {
+    setCurrentChatId(chatId);
+    setMessages([]);
+    // Les messages seront chargés via useEffect quand currentChatId change
   };
 
   const addMessageToFirestore = async (content: string, role: string) => {
@@ -140,6 +148,12 @@ export default function Home() {
 
       // Add user message to Firestore
       await addMessageToFirestore(input, 'user');
+
+      // À ajouter dans handleSubmit après l'ajout du message utilisateur
+      if (messages.length === 0) {
+        const chatTitle = generateChatTitle(input);
+        await updateChatTitle(currentChatId, chatTitle);
+      }
 
       // Get conversation history for context
       const conversationHistory = messages.map(msg => ({
@@ -206,68 +220,75 @@ export default function Home() {
   return (
     <div className="chat-container">
       <AuthNav userEmail={user.email || ''} />
-      <div className="chat-main">
-        <div id="chat-box" className="chat-box" ref={messageContainerRef}>
-          
-          {messages.map((msg, index) => (
-            <div key={index} className={`message-container ${msg.role}-container`}>
-              {msg.role === 'assistant' && (
+      <div className="chat-layout">
+        <ChatList 
+          userId={user.uid}
+          onChatSelect={handleChatSelect}
+          currentChatId={currentChatId}
+        />
+        <div className="chat-main">
+          <div id="chat-box" className="chat-box" ref={messageContainerRef}>
+            
+            {messages.map((msg, index) => (
+              <div key={index} className={`message-container ${msg.role}-container`}>
+                {msg.role === 'assistant' && (
+                  <div className="message-logo">
+                    <Image src="/logo.png" alt="Assistant" width={40} height={40} />
+                  </div>
+                )}
+                <div className={`message ${msg.role}`}>
+                  <MessageRenderer content={msg.content} />
+                </div>
+              </div>
+            ))}
+            
+            {isLoading && !isStreaming && (
+              <div className="message-container assistant-container reflection-message">
                 <div className="message-logo">
                   <Image src="/logo.png" alt="Assistant" width={40} height={40} />
                 </div>
-              )}
-              <div className={`message ${msg.role}`}>
-                <MessageRenderer content={msg.content} />
+                <div className="message assistant reflection-text">
+                  Réflexion en cours...
+                </div>
               </div>
-            </div>
-          ))}
-          
-          {isLoading && !isStreaming && (
-            <div className="message-container assistant-container reflection-message">
-              <div className="message-logo">
-                <Image src="/logo.png" alt="Assistant" width={40} height={40} />
-              </div>
-              <div className="message assistant reflection-text">
-                Réflexion en cours...
-              </div>
-            </div>
-          )}
-        </div>
-        
-        <div className="input-container">
-          <div className="input-wrapper">
-            <textarea
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              onKeyDown={handleKeyDown}
-              placeholder="Écrivez votre message..."
-              disabled={isLoading}
-            />
-            <div className="input-buttons">
-              <button 
-                onClick={handleSubmit} 
-                disabled={isLoading || !input.trim()}
-              >
-                <Image 
-                  src="/icons/send_icon.png" 
-                  alt="Send" 
-                  width={30} 
-                  height={30} 
-                />
-              </button>
-              <button className="attach-button">
-                <Image 
-                  src="/icons/attachment-icon.png" 
-                  alt="Attach" 
-                  width={30} 
-                  height={30} 
-                />
-              </button>
-            </div>
+            )}
           </div>
-          <div className="disclaimer-wrapper">
-            <div className="disclaimer">
-              Constellation peut faire des erreurs. Envisagez de vérifier les informations importantes.
+          
+          <div className="input-container">
+            <div className="input-wrapper">
+              <textarea
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                onKeyDown={handleKeyDown}
+                placeholder="Écrivez votre message..."
+                disabled={isLoading}
+              />
+              <div className="input-buttons">
+                <button 
+                  onClick={handleSubmit} 
+                  disabled={isLoading || !input.trim()}
+                >
+                  <Image 
+                    src="/icons/send_icon.png" 
+                    alt="Send" 
+                    width={30} 
+                    height={30} 
+                  />
+                </button>
+                <button className="attach-button">
+                  <Image 
+                    src="/icons/attachment-icon.png" 
+                    alt="Attach" 
+                    width={30} 
+                    height={30} 
+                  />
+                </button>
+              </div>
+            </div>
+            <div className="disclaimer-wrapper">
+              <div className="disclaimer">
+                Constellation peut faire des erreurs. Envisagez de vérifier les informations importantes.
+              </div>
             </div>
           </div>
         </div>

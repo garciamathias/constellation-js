@@ -126,3 +126,16 @@ export const getChatMessages = async (chatId: string) => {
     ...doc.data()
   }));
 };
+
+// Add functions for managing chat title
+export const generateChatTitle = (firstMessage: string) => {
+  const words = firstMessage.split(' ').slice(0, 5).join(' ');
+  return words + (firstMessage.split(' ').length > 5 ? '...' : '');
+};
+
+export const updateChatTitle = async (chatId: string, title: string) => {
+  const chatRef = doc(db, "chats", chatId);
+  await updateDoc(chatRef, {
+    title: title
+  });
+};
