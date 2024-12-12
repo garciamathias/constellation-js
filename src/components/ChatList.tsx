@@ -14,9 +14,10 @@ interface ChatListProps {
   onChatSelect: (chatId: string) => void;
   currentChatId: string | null;
   refreshTrigger?: number; // Nouveau prop
+  onNewChat: () => void; // Add this prop
 }
 
-export const ChatList = ({ userId, onChatSelect, currentChatId, refreshTrigger }: ChatListProps) => {
+export const ChatList = ({ userId, onChatSelect, currentChatId, refreshTrigger, onNewChat }: ChatListProps) => {
   const [isOpen, setIsOpen] = useState(true);
   const [chats, setChats] = useState<Chat[]>([]);
   const [mounted, setMounted] = useState(false);
@@ -70,17 +71,30 @@ export const ChatList = ({ userId, onChatSelect, currentChatId, refreshTrigger }
 
   return (
     <>
-      <button 
-        className={`toggle-sidebar ${isOpen ? 'open' : ''}`}
-        onClick={() => setIsOpen(!isOpen)}
-      >
-        <Image 
-          src="/icons/sidebar-icon.png" 
-          alt="Toggle Sidebar"
-          width={20}
-          height={20}
-        />
-      </button>
+      <div className={`sidebar-controls ${isOpen ? 'open' : ''}`}>
+        <button 
+          className={`toggle-sidebar ${isOpen ? 'open' : ''}`}
+          onClick={() => setIsOpen(!isOpen)}
+        >
+          <Image 
+            src="/icons/sidebar-icon.png" 
+            alt="Toggle Sidebar"
+            width={20}
+            height={20}
+          />
+        </button>
+        <button 
+          className="new-chat-button"
+          onClick={onNewChat}
+        >
+          <Image 
+            src="/icons/add-new-chat-icon.png" 
+            alt="New Chat"
+            width={20}
+            height={20}
+          />
+        </button>
+      </div>
       
       <div className={`chat-list ${isOpen ? 'open' : 'closed'}`}>
         <div className="chat-list-content">

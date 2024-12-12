@@ -241,6 +241,12 @@ export default function Home() {
     }
   };
 
+  const handleNewChat = () => {
+    setCurrentChatId(null);
+    setMessages([]);
+    setInput('');
+  };
+
   if (loading) {
     return <div>Loading...</div>;
   }
@@ -258,6 +264,7 @@ export default function Home() {
           onChatSelect={handleChatSelect}
           currentChatId={currentChatId}
           refreshTrigger={refreshChatList}
+          onNewChat={handleNewChat} // Add this prop
         />
         <div className="chat-main">
           <div id="chat-box" className="chat-box" ref={messageContainerRef}>

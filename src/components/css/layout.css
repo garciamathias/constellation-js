@@ -152,9 +152,9 @@
 
 /* Nouveau style pour le toggle-sidebar */
 .toggle-sidebar {
-    position: fixed;
-    left: 20px;
-    top: 14px; /* Ajusté pour aligner avec le header */
+    position: static; /* Change from fixed to static */
+    left: auto;
+    top: auto;
     z-index: 101;
     background: none;
     border: none;
@@ -189,7 +189,59 @@
     transform: rotate(180deg);
 }
 
-/* Ajuster la position en mobile */
+/* Container for sidebar controls */
+.sidebar-controls {
+    position: fixed;
+    left: 20px;
+    top: 14px;
+    z-index: 101;
+    display: flex;
+    gap: 20px; 
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.sidebar-controls.open {
+    transform: translateX(220px); /* Déplace les boutons quand la sidebar est ouverte */
+}
+
+/* Style for new chat button */
+.new-chat-button {
+    background: none;
+    border: none;
+    width: 32px;
+    height: 32px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    opacity: 0.6;
+    padding: 0;
+}
+
+.new-chat-button:hover {
+    opacity: 1;
+    transform: scale(1.1);
+}
+
+.new-chat-button img {
+    width: 24px;
+    height: 24px;
+    filter: invert(0);
+}
+
+/* Update media query for both buttons */
+@media (max-width: 768px) {
+    .sidebar-controls {
+        top: 10px;
+        left: 16px;
+    }
+    
+    .sidebar-controls.open {
+        transform: translateX(216px);
+    }
+}
+
 @media (max-width: 768px) {
     .toggle-sidebar {
         top: 10px;
