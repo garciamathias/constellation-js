@@ -62,24 +62,38 @@ export default function Home() {
     loadMessages();
   }, [currentChatId, user]);
 
-  // Create a new chat if none exists
-  useEffect(() => {
-    if (user && !currentChatId) {
-      createNewChat();
-    }
-  }, [user]);
+  // Supprimer complètement cet useEffect car nous ne voulons plus de création automatique
+  // useEffect(() => {
+  //   if (user && !currentChatId) {
+  //     createNewChat();
+  //   }
+  // }, [user]);
 
-  const createNewChat = async () => {
+  // Modifier la fonction createNewChat pour inclure le premier message
+  const createNewChat = async (firstMessage: string) => {
     if (!user) return;
     try {
+      // Créer le chat avec le titre basé sur le premier message
       const chatRef = await addDoc(collection(db, "chats"), {
         userId: user.uid,
         created_at: new Date(),
         last_updated: new Date(),
-        title: "Nouvelle conversation"
+        title: generateChatTitle(firstMessage)
       });
+      
+      // Ajouter immédiatement le premier message
+      const messagesRef = collection(db, "chats", chatRef.id, "messages");
+      await addDoc(messagesRef, {
+        content: firstMessage,
+        role: 'user',
+        message_order: 1,
+        timestamp: new Date()
+      });
+
       setCurrentChatId(chatRef.id);
       await incrementUserChatCount(user.uid, chatRef.id);
+      await incrementUserMessageCount(user.uid);
+      
       return chatRef.id;
     } catch (error) {
       console.error('Error creating chat:', error);
@@ -126,6 +140,7 @@ export default function Home() {
     scrollToBottom(true);
   };
 
+  // Modifier handleSubmit pour gérer la création du chat avec le premier message
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!input.trim() || !user) return;
@@ -141,18 +156,13 @@ export default function Home() {
     forceScrollToBottom();
 
     try {
-      // Ensure chat exists
+      // Créer un nouveau chat avec le premier message si nécessaire
       if (!currentChatId) {
-        await createNewChat();
-      }
-
-      // Add user message to Firestore
-      await addMessageToFirestore(input, 'user');
-
-      // À ajouter dans handleSubmit après l'ajout du message utilisateur
-      if (messages.length === 0) {
-        const chatTitle = generateChatTitle(input);
-        await updateChatTitle(currentChatId, chatTitle);
+        const newChatId = await createNewChat(input);
+        if (!newChatId) throw new Error("Failed to create chat");
+      } else {
+        // Si le chat existe déjà, ajouter simplement le message
+        await addMessageToFirestore(input, 'user');
       }
 
       // Get conversation history for context
