@@ -142,34 +142,55 @@
   background: rgba(255, 255, 255, 0.15);
 }
 
-/* Remove existing toggle-sidebar styles and add new ones */
+/* Nouveau style pour le toggle-sidebar */
 .toggle-sidebar {
     position: fixed;
     left: 20px;
-    top: 10px; /* Changed from 56px to 10px to align with header */
+    top: 14px; /* Ajusté pour aligner avec le header */
     z-index: 101;
-    background: rgba(32, 32, 32, 0.8);
-    border: 1px solid var(--border-color);
-    border-radius: 8px;
-    width: 36px;
-    height: 36px;
+    background: none;
+    border: none;
+    width: 32px;
+    height: 32px;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: left 0.3s ease;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    opacity: 0.6;
+    padding: 0;
+}
+
+.toggle-sidebar:hover {
+    opacity: 1;
+    transform: scale(1.1);
 }
 
 .toggle-sidebar.open {
-    left: 290px;
+    left: 240px; /* Ajusté pour être plus proche du bord de la sidebar */
 }
 
 .toggle-sidebar img {
-    width: 20px;
-    height: 20px;
-    opacity: 0.8;
-    filter: invert(0);
+    width: 24px; /* Taille réduite pour plus de subtilité */
+    height: 24px;
+    filter: invert(0); /* Pour une meilleure visibilité sur fond sombre */
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
 
+.toggle-sidebar.open img {
+    transform: rotate(180deg);
+}
+
+/* Ajuster la position en mobile */
+@media (max-width: 768px) {
+    .toggle-sidebar {
+        top: 10px;
+        left: 16px;
+    }
+    
+    .toggle-sidebar.open {
+        left: 236px;
+    }
 }
 
 .chat-title {
