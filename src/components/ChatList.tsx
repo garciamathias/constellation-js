@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { db } from '@/lib/firebase';
 import { collection, query, where, orderBy, getDocs } from '@firebase/firestore';
+import Image from 'next/image';
 
 interface Chat {
   id: string;
@@ -15,8 +16,13 @@ interface ChatListProps {
 }
 
 export const ChatList = ({ userId, onChatSelect, currentChatId }: ChatListProps) => {
-  const [chats, setChats] = useState<Chat[]>([]);
   const [isOpen, setIsOpen] = useState(true);
+  const [chats, setChats] = useState<Chat[]>([]);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
     const loadChats = async () => {
@@ -42,32 +48,58 @@ export const ChatList = ({ userId, onChatSelect, currentChatId }: ChatListProps)
     }
   }, [userId]);
 
+  useEffect(() => {
+    const layout = document.querySelector('.chat-layout');
+    if (layout) {
+      if (isOpen) {
+        layout.classList.add('sidebar-open');
+      } else {
+        layout.classList.remove('sidebar-open');
+      }
+    }
+  }, [isOpen]);
+
+  const formatDate = (date: Date) => {
+    return date.toLocaleDateString('fr-FR', {
+      year: 'numeric',
+      month: 'numeric',
+      day: 'numeric',
+    });
+  };
+
   return (
-    <div className={`chat-list ${isOpen ? 'open' : 'closed'}`}>
+    <>
       <button 
-        className="toggle-sidebar"
+        className={`toggle-sidebar ${isOpen ? 'open' : ''}`}
         onClick={() => setIsOpen(!isOpen)}
       >
-        {isOpen ? '←' : '→'}
+        <Image 
+          src="/icons/sidebar-icon.png" 
+          alt="Toggle Sidebar"
+          width={20}
+          height={20}
+        />
       </button>
       
-      <div className="chat-list-content">
-        <h2>Conversations</h2>
-        <div className="chat-items">
-          {chats.map((chat) => (
-            <div
-              key={chat.id}
-              className={`chat-item ${chat.id === currentChatId ? 'active' : ''}`}
-              onClick={() => onChatSelect(chat.id)}
-            >
-              <span className="chat-title">{chat.title}</span>
-              <span className="chat-date">
-                {chat.created_at.toLocaleDateString()}
-              </span>
-            </div>
-          ))}
+      <div className={`chat-list ${isOpen ? 'open' : 'closed'}`}>
+        <div className="chat-list-content">
+          <h2>Conversations</h2>
+          <div className="chat-items">
+            {mounted && chats.map((chat) => (
+              <div
+                key={chat.id}
+                className={`chat-item ${chat.id === currentChatId ? 'active' : ''}`}
+                onClick={() => onChatSelect(chat.id)}
+              >
+                <span className="chat-title">{chat.title}</span>
+                <span className="chat-date">
+                  {mounted ? formatDate(chat.created_at) : ''}
+                </span>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };

@@ -7,6 +7,12 @@
     position: relative;
     min-width: 300px;
     overflow-x: hidden;
+    padding: 0;
+    margin: 0;
+    /* Ajouter ces propriétés */
+    overflow-y: hidden;
+    min-height: 100vh;
+    max-height: 100vh;
 }
 
 .chat-header {
@@ -30,6 +36,10 @@
     max-width: 1800px;
     margin: 0 auto;
     min-width: 300px;
+    height: 100%;
+    /* Améliorer les transitions */
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transform-origin: left center;
 }
 
 .chat-box {
@@ -77,18 +87,31 @@
     height: calc(100vh - 46px);
     position: relative;
     width: 100%;
-  }
+    /* Ajouter ces propriétés */
+    flex: 1;
+    overflow: hidden;
+    /* Supprimer tout padding ou margin superflu */
+    padding: 0;
+    margin: 0;
+    /* Améliorer la transition */
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
 
 .chat-list {
-  width: 280px;
-  background: rgba(32, 32, 32, 0.3);
-  border-right: 1px solid var(--border-color);
-  transition: width 0.3s ease;
-  position: relative;
+    position: fixed;
+    left: 0;
+    top: 0; /* Changed from 46px to 0 */
+    height: 100vh; /* Changed from calc(100vh - 46px) to 100vh */
+    width: 280px;
+    background: rgba(32, 32, 32, 0.3);
+    border-right: 1px solid var(--border-color);
+    /* Améliorer la transition de la sidebar */
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 100;
 }
 
 .chat-list.closed {
-  width: 0;
+    transform: translateX(-100%);
 }
 
 .chat-list-content {
@@ -119,21 +142,34 @@
   background: rgba(255, 255, 255, 0.15);
 }
 
+/* Remove existing toggle-sidebar styles and add new ones */
 .toggle-sidebar {
-  position: absolute;
-  right: -20px;
-  top: 50%;
-  transform: translateY(-50%);
-  z-index: 10;
-  background: rgba(32, 32, 32, 0.8);
-  border: 1px solid var(--border-color);
-  border-radius: 50%;
-  width: 20px;
-  height: 20px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+    position: fixed;
+    left: 20px;
+    top: 10px; /* Changed from 56px to 10px to align with header */
+    z-index: 101;
+    background: rgba(32, 32, 32, 0.8);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    width: 36px;
+    height: 36px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: left 0.3s ease;
+}
+
+.toggle-sidebar.open {
+    left: 290px;
+}
+
+.toggle-sidebar img {
+    width: 20px;
+    height: 20px;
+    opacity: 0.8;
+    filter: invert(0);
+
 }
 
 .chat-title {
@@ -155,4 +191,24 @@
     z-index: 100;
     height: 100%;
   }
+}
+
+/* Modifier l'état sidebar-open */
+.chat-layout.sidebar-open .chat-main {
+    width: calc(100% - 280px);
+    margin-left: 280px;
+    /* Supprimer les calculs complexes et utiliser transform pour une meilleure performance */
+    transform: translateX(0);
+}
+
+/* État par défaut (sidebar fermée) */
+.chat-layout .chat-main {
+    width: 100%;
+    margin-left: 0;
+    transform: translateX(0);
+}
+
+/* Remove the old sidebar-open class */
+.chat-layout.sidebar-open {
+    padding-left: 0;
 }
