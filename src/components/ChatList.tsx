@@ -13,9 +13,10 @@ interface ChatListProps {
   userId: string;
   onChatSelect: (chatId: string) => void;
   currentChatId: string | null;
+  refreshTrigger?: number; // Nouveau prop
 }
 
-export const ChatList = ({ userId, onChatSelect, currentChatId }: ChatListProps) => {
+export const ChatList = ({ userId, onChatSelect, currentChatId, refreshTrigger }: ChatListProps) => {
   const [isOpen, setIsOpen] = useState(true);
   const [chats, setChats] = useState<Chat[]>([]);
   const [mounted, setMounted] = useState(false);
@@ -46,7 +47,7 @@ export const ChatList = ({ userId, onChatSelect, currentChatId }: ChatListProps)
     if (userId) {
       loadChats();
     }
-  }, [userId]);
+  }, [userId, refreshTrigger]); // Ajouter refreshTrigger comme dépendance
 
   useEffect(() => {
     const layout = document.querySelector('.chat-layout');

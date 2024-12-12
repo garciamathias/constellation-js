@@ -26,6 +26,7 @@ export default function Home() {
   const { user, loading } = useAuth();
   const router = useRouter();
   const [currentChatId, setCurrentChatId] = useState<string | null>(null);
+  const [refreshChatList, setRefreshChatList] = useState(0);
 
   useEffect(() => {
     if (!loading) {
@@ -93,7 +94,7 @@ export default function Home() {
       setCurrentChatId(chatRef.id);
       await incrementUserChatCount(user.uid, chatRef.id);
       await incrementUserMessageCount(user.uid);
-      
+      setRefreshChatList(prev => prev + 1); // Ajouter cette ligne à la fin
       return chatRef.id;
     } catch (error) {
       console.error('Error creating chat:', error);
@@ -235,6 +236,7 @@ export default function Home() {
           userId={user.uid}
           onChatSelect={handleChatSelect}
           currentChatId={currentChatId}
+          refreshTrigger={refreshChatList}
         />
         <div className="chat-main">
           <div id="chat-box" className="chat-box" ref={messageContainerRef}>
