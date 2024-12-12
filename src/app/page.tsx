@@ -157,10 +157,12 @@ export default function Home() {
     forceScrollToBottom();
 
     try {
+      let chatId = currentChatId;
       // Créer un nouveau chat avec le premier message si nécessaire
-      if (!currentChatId) {
+      if (!chatId) {
         const newChatId = await createNewChat(input);
         if (!newChatId) throw new Error("Failed to create chat");
+        chatId = newChatId; // Stocker l'ID du nouveau chat
       } else {
         // Si le chat existe déjà, ajouter simplement le message
         await addMessageToFirestore(input, 'user');
@@ -192,11 +194,30 @@ export default function Home() {
           await handleStreamingUpdate(accumulatedContent);
         }
         
+        // Utiliser chatId au lieu de currentChatId
+        const messagesRef = collection(db, "chats", chatId, "messages");
+        const messageCount = (await getDocs(query(messagesRef, orderBy("message_order", "desc")))).size;
+        
         // Store complete assistant response
-        await addMessageToFirestore(accumulatedContent, 'assistant');
+        await addDoc(messagesRef, {
+          content: accumulatedContent,
+          role: 'assistant',
+          message_order: messageCount + 1,
+          timestamp: new Date()
+        });
+        
       } else {
         setMessages(prev => [...prev, { role: 'assistant', content: response }]);
-        await addMessageToFirestore(response, 'assistant');
+        // Utiliser chatId au lieu de currentChatId
+        const messagesRef = collection(db, "chats", chatId, "messages");
+        const messageCount = (await getDocs(query(messagesRef, orderBy("message_order", "desc")))).size;
+        
+        await addDoc(messagesRef, {
+          content: response,
+          role: 'assistant',
+          message_order: messageCount + 1,
+          timestamp: new Date()
+        });
       }
     } catch (error) {
       console.error('ChatGPT Error:', error);
