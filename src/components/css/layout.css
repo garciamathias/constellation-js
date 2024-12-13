@@ -46,24 +46,26 @@
 .chat-box {
     flex: 1;
     overflow-y: auto;
-    padding: 5px max(15%, 280px); /* Minimum padding of 280px (sidebar width) */
+    padding: 5px 16px;
     width: 100%;
+    max-width: 900px;
+    margin: 70px auto 0;
     box-sizing: border-box;
     word-wrap: break-word;
     overflow-x: hidden;
     position: relative; /* Pour le positionnement absolu des logos */
 }
 
-/* Ajuster les media queries pour garder de l'espace pour les logos */
+/* Supprimer ou modifier les media queries existantes pour .chat-box */
 @media (max-width: 1400px) {
     .chat-box {
-        padding: 5px max(10%, 280px);
+        padding: 5px 16px;
     }
 }
 
 @media (max-width: 1200px) {
     .chat-box {
-        padding: 5px max(5%, 280px);
+        padding: 5px 16px;
     }
 }
 
@@ -186,7 +188,7 @@
 }
 
 .toggle-sidebar.open img {
-    transform: rotate(180deg);
+    transform: rotate(360deg);
 }
 
 /* Container for sidebar controls */
@@ -279,12 +281,11 @@
     width: calc(100% - 280px);
     margin-left: 280px;
     /* Supprimer les calculs complexes et utiliser transform pour une meilleure performance */
-    transform: translateX(0);
 }
 
 /* État par défaut (sidebar fermée) */
 .chat-layout .chat-main {
-    width: 100%;
+    width: calc(100% - 280px);
     margin-left: 0;
     transform: translateX(0);
 }

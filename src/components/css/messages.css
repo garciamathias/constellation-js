@@ -4,7 +4,7 @@
     border-radius: 20px;
     padding: 10px 20px;
     margin: 0;
-    max-width: 80%;   /* Mise à jour de la largeur max */
+    max-width: 90%;   /* Mise à jour de la largeur max */
     margin-left: auto;
     margin-right: 0;  /* Reset de la marge droite */
     font-size: 17px;
@@ -19,7 +19,7 @@
     background: transparent;
     padding: 0;
     margin: 0;
-    max-width: 80%;   /* Mise à jour de la largeur max */
+    max-width: 100%;   /* Mise à jour de la largeur max */
     color: rgba(255, 255, 255, 0.9);
     font-size: 17px;
     line-height: 1.6;
@@ -33,11 +33,11 @@
     display: flex;
     align-items: flex-start; /* Aligner les éléments en haut */
     gap: 12px;
-    margin: 15px 0; 
+    margin: 10px 0; 
     flex-wrap: wrap;
     min-width: 0;
     position: relative;
-    padding-left: 60px; /* Espace pour le logo */
+    padding-left: 40px; /* Espace pour le logo */
 }
 
 
@@ -53,9 +53,9 @@
     width: 40px;
     height: 40px;
     flex-shrink: 0;
-    margin: 0;
+    margin-left: -10px;
     padding: 0;
-    top: 15px; /* Modifié de 0 à 30px */
+    top: 15px; 
 }
 
 .message-logo img {

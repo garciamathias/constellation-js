@@ -3,7 +3,7 @@
     bottom: 0;
     left: 0;
     right: 0;
-    padding: 20px 0;
+    padding: 10px 0;
     background: linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0) 100%);
     display: flex;
     flex-direction: column;
@@ -41,7 +41,7 @@ textarea::placeholder {
 }
 
 .input-wrapper {
-    width: 60%;
+    width: calc(100% - 32px);
     min-width: 300px;
     max-width: 800px;
     margin: 0 auto;
@@ -50,18 +50,6 @@ textarea::placeholder {
     gap: 12px;
 }
 
-@media (max-width: 1200px) {
-    .input-wrapper {
-        width: 80%;
-    }
-}
-
-@media (max-width: 768px) {
-    .input-wrapper {
-        width: calc(100% - 32px);
-        margin: 0 16px;
-    }
-}
 
 .input-buttons {
     position: absolute;
@@ -103,7 +91,7 @@ textarea::placeholder {
 }
 
 .disclaimer-wrapper {
-    width: 60%;
+    width: calc(100% - 32px);
     min-width: 300px;
     max-width: 800px;
     margin: 0 auto;
@@ -111,18 +99,6 @@ textarea::placeholder {
     justify-content: center;
 }
 
-@media (max-width: 1200px) {
-    .disclaimer-wrapper {
-        width: 80%;
-    }
-}
-
-@media (max-width: 768px) {
-    .disclaimer-wrapper {
-        width: calc(100% - 32px);
-        margin: 0 16px;
-    }
-}
 
 .disclaimer {
     text-align: center;
