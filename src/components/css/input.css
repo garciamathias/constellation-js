@@ -4,7 +4,7 @@
     left: 0;
     right: 0;
     padding: 10px 0;
-    background: linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0) 100%);
+    background: linear-gradient(to top, var(--container-bg) 0%, transparent 100%);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -16,12 +16,12 @@
 
 textarea {
     width: 100%;
-    background-color: rgba(32, 32, 32, 0.3);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    background-color: var(--input-bg);
+    border: 1px solid var(--border-color);
     border-radius: 20px;
     padding: 15px 55px 15px 15px;
     resize: none;
-    color: rgba(255, 255, 255, 0.9);
+    color: var(--input-text-color);
     font-size: 17px;
     min-height: 80px;
     max-height: 80px;
@@ -32,12 +32,12 @@ textarea {
 
 textarea:focus {
     outline: none;
-    background-color: rgba(32, 32, 32, 0.3);
-    border-color: rgba(255, 255, 255, 0.186);
+    background-color: var(--input-bg);
+    border-color: var(--border-color);
 }
 
 textarea::placeholder {
-    color: rgba(255, 255, 255, 0.5);
+    color: var(--input-placeholder-color);
 }
 
 .input-wrapper {
@@ -49,7 +49,6 @@ textarea::placeholder {
     display: flex;
     gap: 12px;
 }
-
 
 .input-buttons {
     position: absolute;
@@ -64,7 +63,7 @@ textarea::placeholder {
 }
 
 .input-buttons button {
-    background-color: rgba(32, 32, 32, 0.8);
+    background-color: var(--message-bg);
     border-radius: 12px;
     border: none;
     padding: 12px;
@@ -79,14 +78,18 @@ textarea::placeholder {
 }
 
 .input-buttons button:hover {
-    background-color: rgba(45, 45, 45, 0.8);
+    background-color: var(--menu-hover-bg);
     opacity: 1;
 }
 
 .input-buttons img {
     width: 30px;
     height: 30px;
-    filter: invert(0);
+    filter: var(--icon-filter);
+    opacity: var(--icon-opacity);
+}
+
+.input-buttons button:hover img {
     opacity: 1;
 }
 
@@ -99,14 +102,13 @@ textarea::placeholder {
     justify-content: center;
 }
 
-
 .disclaimer {
     text-align: center;
-    color: rgb(149, 149, 149);
+    color: var(--font-color);
     font-size: 12px;
+    opacity: 0.6;
 }
 
-/* Styles pour l'input centré */
 .input-container.centered {
     position: fixed;
     top: 64%;
@@ -125,8 +127,8 @@ textarea::placeholder {
 .welcome-message {
     text-align: center;
     margin-top: 320px;
-    color: rgba(255, 255, 255);
-    font-size: 30px; /* Changed from 1.5rem to 24px */
+    color: var(--font-color);
+    font-size: 30px;
     font-weight: 500;
     opacity: 0;
     transform: translateY(20px);
@@ -142,8 +144,7 @@ textarea::placeholder {
       transform: translateY(0);
       opacity: 1;
     }
-  }
-  
+}
 
 @keyframes fadeInUp {
     from {

@@ -7,25 +7,32 @@
     max-width: 90%;   /* Mise à jour de la largeur max */
     margin-left: auto;
     margin-right: 5px;  /* Reset de la marge droite */
-    font-size: 17px;
-    color: rgba(255, 255, 255, 0.9);
+    font-size: 18px;
+    color: var(--font-color);
     backdrop-filter: blur(10px);
     word-wrap: break-word;
     overflow-wrap: break-word;
 }
 
+
 /* Style pour la réponse du modèle (sans bulle) */
 .message.bot {
-    background: transparent;
+    background: var(--message-bg);
     padding: 0;
     margin: 0;
     max-width: 100%;   /* Mise à jour de la largeur max */
-    color: rgba(255, 255, 255, 0.9);
+    color: var(--font-color);
     font-size: 17px;
     line-height: 1.6;
     display: block;
     word-wrap: break-word;
     overflow-wrap: break-word;
+}
+
+/* Style pour la réflexion */
+.message.assistant.reflection-text {
+    color: var(--font-color);
+    opacity: 0.8;
 }
 
 /* Container pour le message et le logo */
@@ -41,7 +48,6 @@
 }
 
 
-/* Dans messages.css, ajouter : */
 .message.assistant.reflection-text {
     padding-top: 20px;
 }
@@ -82,6 +88,7 @@
     padding: 0;
     border-radius: 0;
     font-family: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
+    color: var(--code-text-color);
 }
 
 /* Espacement pour le texte autour des formules */
@@ -93,7 +100,7 @@
 /* Style pour séparer visuellement les sections de calcul */
 .message.bot hr {
     border: none;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    border-top: 1px solid var(--border-color);
     margin: 2em 0;
 }
 
@@ -106,6 +113,24 @@
 .message.user p,
 .message.bot p {
     margin: 0;  /* Enlève les marges par défaut des paragraphes */
+}
+
+.message.bot p,
+.message.assistant p {
+    color: var(--font-color);
+}
+
+/* Style pour les liens */
+.message.bot a,
+.message.assistant a {
+    color: var(--font-color);
+    opacity: 0.8;
+    text-decoration: underline;
+}
+
+.message.bot a:hover,
+.message.assistant a:hover {
+    opacity: 1;
 }
 
 @media (max-width: 768px) {

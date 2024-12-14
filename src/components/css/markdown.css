@@ -16,21 +16,21 @@
 }
 
 .message.bot code {
-    background-color: rgba(50, 50, 50, 0.8); /* Slightly darker background */
+    background-color: var(--code-bg);
+    color: var(--code-text-color);
     padding: 2px 6px; /* Adjust padding */
     border-radius: 4px; /* Adjust border radius */
     font-family: 'JetBrains Mono', 'Fira Code', monospace; /* Change font for better readability */
-    color: #ffffff; /* Distinctive text color */
     font-size: 0.95em; /* Slightly smaller font size */
 }
 
 .message.bot pre {
-    background-color: rgba(30, 30, 30, 0.8); /* Darker background for better contrast */
+    background-color: var(--code-block-bg);
+    color: var(--code-text-color);
     padding: 1.2em; /* Increased padding for better readability */
     border-radius: 10px; /* Slightly larger border radius */
     overflow-x: auto;
     margin: 1.5em 0; /* Plus d'espace avant/après les blocs de code */
-    color: #e6e6e6; /* Lighter text color */
     font-size: 0.95em; /* Slightly smaller font size */
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Ajoute une ombre légère */
 }
@@ -59,8 +59,8 @@
     overflow-x: auto;
     margin: 1.5em 0; /* Plus d'espace autour des tableaux */
     border-radius: 6px;
-    background: rgba(32, 32, 32, 0.4);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: var(--message-bg);
+    border: 1px solid var(--table-border);
 }
 
 .message.bot table {
@@ -73,20 +73,20 @@
 }
 
 .message.bot th {
-    background: rgba(45, 45, 45, 0.6);
-    color: rgba(255, 255, 255, 0.9);
+    background: var(--table-header-bg);
+    color: var(--font-color);
     font-weight: 500;
     padding: 8px 12px;
     text-align: left;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    border-right: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid var(--table-border);
+    border-right: 1px solid var(--table-border);
 }
 
 .message.bot td {
     padding: 8px 12px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.07);
-    border-right: 1px solid rgba(255, 255, 255, 0.07);
-    color: rgba(255, 255, 255, 0.75);
+    border-bottom: 1px solid var(--table-cell-border);
+    border-right: 1px solid var(--table-cell-border);
+    color: var(--font-color);
 }
 
 .message.bot th:last-child,

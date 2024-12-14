@@ -8,7 +8,7 @@
 }
 
 ::-webkit-scrollbar-thumb {
-    background: rgba(255, 255, 255, 0.1);
+    background: var(--border-color);
     border-radius: 3px;
 }
 
@@ -24,7 +24,36 @@
 .theme-switcher img {
     width: 24px;
     height: 24px;
-    filter: invert(1);
+    filter: invert(var(--font-color-invert, 1));
+}
+
+/* Theme toggle */
+.theme-toggle {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 40px;
+    height: 40px;
+    background: var(--message-bg);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: 1px solid var(--border-color);
+    backdrop-filter: blur(10px);
+    z-index: 1000;
+}
+
+.theme-toggle:hover {
+    transform: scale(1.1);
+}
+
+.theme-toggle img {
+    width: 24px;
+    height: 24px;
+    transition: all 0.3s ease;
 }
 
 /* Message actions */
@@ -39,7 +68,7 @@
     width: 16px;
     height: 16px;
     cursor: pointer;
-    filter: invert(1);
+    filter: invert(var(--font-color-invert, 1));
 }
 
 button {
@@ -58,7 +87,7 @@ button:hover {
 button img {
     width: 20px;
     height: 20px;
-    filter: invert(1);
+    filter: invert(var(--font-color-invert, 1));
 }
 
 .input-actions {
@@ -67,4 +96,32 @@ button img {
     display: flex;
     gap: 10px;
     align-items: center;
+}
+
+/* Style global pour toutes les icônes d'action */
+.action-icon {
+    filter: var(--icon-filter);
+    opacity: var(--icon-opacity);
+    transition: opacity 0.2s ease;
+}
+
+.action-icon:hover {
+    opacity: 1;
+}
+
+/* Appliquer aux boutons spécifiques */
+.input-buttons img,
+.toggle-sidebar img,
+.new-chat-button img,
+.attach-button img {
+    filter: var(--icon-filter);
+    opacity: var(--icon-opacity);
+    transition: opacity 0.2s ease;
+}
+
+.input-buttons button:hover img,
+.toggle-sidebar:hover img,
+.new-chat-button:hover img,
+.attach-button:hover img {
+    opacity: 1;
 }

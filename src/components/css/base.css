@@ -1,12 +1,71 @@
 :root {
+    /* Couleurs principales en mode sombre par défaut */
     --bg-color: #000000;
     --container-bg: #000000;
-    --message-bg: rgba(32, 32, 32, 0.3);
-    --user-bubble-bg: rgba(32, 32, 32, 0.5);
-    --input-bg: rgba(32, 32, 32, 0.3);
     --font-color: #ffffff;
     --border-color: rgba(255, 255, 255, 0.1);
-    --input-border-radius: 12px;
+
+    /* Messages et bulles */
+    --message-bg: rgba(32, 32, 32, 0.3);
+    --user-bubble-bg: rgba(32, 32, 32, 0.5);
+    --bot-bubble-bg: rgba(32, 32, 32, 0.3);
+    --bot-text-color: var(--font-color);
+    --assistant-bg: rgba(32, 32, 32, 0.3);
+    
+    /* Input et formulaires */
+    --input-bg: rgba(32, 32, 32, 0.3);
+    --input-text-color: #ffffff;
+    --input-placeholder-color: rgba(255, 255, 255, 0.5);
+    
+    /* Les autres variables restent identiques... */
+    --icon-filter: invert(0);
+    
+    /* Composants UI */
+    --toolbar-bg: rgba(255, 255, 255, 0.1);
+    --toolbar-text: rgba(255, 255, 255, 0.8);
+    --toolbar-border: rgba(255, 255, 255, 0.2);
+    
+    /* Tableau */
+    --table-header-bg: rgba(45, 45, 45, 0.6);
+    --table-border: rgba(255, 255, 255, 0.1);
+    --table-cell-border: rgba(255, 255, 255, 0.07);
+    
+    /* Auth et menus */
+    --auth-form-bg: rgba(32, 32, 32, 0.3);
+    --dropdown-menu-bg: rgba(32, 32, 32, 0.8);
+    --menu-hover-bg: rgba(255, 255, 255, 0.1);
+
+    /* Sidebar et Navigation */
+    --sidebar-bg: rgba(32, 32, 32, 0.3);
+    --sidebar-item-bg: rgba(255, 255, 255, 0.05);
+    --sidebar-item-hover: rgba(255, 255, 255, 0.1);
+    --sidebar-item-active: rgba(255, 255, 255, 0.15);
+    --sidebar-text: rgba(255, 255, 255, 0.9);
+    --sidebar-text-secondary: rgba(255, 255, 255, 0.5);
+}
+
+/* Ajout de la classe theme-light qui override les variables du dark mode */
+.theme-light {
+    --bg-color: #ffffff;
+    --container-bg: #f8f8f8;
+    --font-color: #000000;
+    --border-color: rgba(0, 0, 0, 0.1);
+    --message-bg: rgba(240, 240, 240, 0.8);
+    --user-bubble-bg: rgba(220, 220, 220, 0.8);
+    --bot-bubble-bg: rgba(240, 240, 240, 0.8);
+    --assistant-bg: rgba(240, 240, 240, 0.8);
+    --input-bg: rgba(240, 240, 240, 0.8);
+    --input-text-color: #000000;
+    --input-placeholder-color: rgba(0, 0, 0, 0.5);
+    --icon-filter: invert(1);
+
+    /* Sidebar et Navigation en mode clair */
+    --sidebar-bg: rgba(255, 255, 255, 0.8);
+    --sidebar-item-bg: rgba(0, 0, 0, 0.05);
+    --sidebar-item-hover: rgba(0, 0, 0, 0.1);
+    --sidebar-item-active: rgba(0, 0, 0, 0.15);
+    --sidebar-text: rgba(0, 0, 0, 0.9);
+    --sidebar-text-secondary: rgba(0, 0, 0, 0.5);
 }
 
 body {
@@ -20,13 +79,5 @@ body {
     justify-content: center;
     align-items: center;
     line-height: 1.5;
-    font-size: 17px;
-}
-
-/* Mode sombre */
-@media (prefers-color-scheme: dark) {
-    :root {
-        --bg-color: #000000;
-        --container-bg: #000000;
-    }
+    font-size: 18px;
 }

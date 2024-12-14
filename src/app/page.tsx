@@ -13,6 +13,7 @@ import { useMarkdownRenderer } from '@/hooks/useMarkdownRenderer';
 import { MessageRenderer } from '@/components/MessageRenderer';
 import { useAutoScroll } from '@/hooks/useAutoScroll';
 import { incrementUserMessageCount, incrementUserChatCount } from '@/lib/firebase';
+import { ThemeToggle } from '@/components/ThemeToggle';
 
 export default function Home() {
   const [messages, setMessages] = useState<{role: string, content: string}[]>([]);
@@ -98,6 +99,7 @@ export default function Home() {
   const handleChatSelect = async (chatId: string) => {
     setCurrentChatId(chatId);
     setMessages([]);
+    setIsNewChat(false); // Ajout de cette ligne
     // Les messages seront chargés via useEffect quand currentChatId change
   };
 
@@ -334,6 +336,7 @@ export default function Home() {
           </div>
         </div>
       </div>
+      <ThemeToggle />
     </div>
   );
 }

@@ -62,6 +62,8 @@ export const ChatList = ({ userId, onChatSelect, currentChatId, refreshTrigger, 
   }, [isOpen]);
 
   const formatDate = (date: Date) => {
+    if (!mounted) return ''; // Retourne une chaîne vide pendant le rendu côté serveur
+    
     return date.toLocaleDateString('fr-FR', {
       year: 'numeric',
       month: 'numeric',
@@ -110,9 +112,11 @@ export const ChatList = ({ userId, onChatSelect, currentChatId, refreshTrigger, 
                   onClick={() => onChatSelect(chat.id)}
                 >
                   <span className="chat-title">{chat.title}</span>
-                  <span className="chat-date">
-                    {mounted ? formatDate(chat.created_at) : ''}
-                  </span>
+                  {mounted && ( // Conditionnellement rendre la date uniquement côté client
+                    <span className="chat-date">
+                      {formatDate(chat.created_at)}
+                    </span>
+                  )}
                 </div>
               ))}
             </div>
