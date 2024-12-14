@@ -1,16 +1,16 @@
-import { useState, useEffect, RefObject } from 'react';
+import { useState, useEffect, RefObject, useCallback } from 'react';
 
 export const useAutoScroll = (containerRef: RefObject<HTMLDivElement>) => {
   const [shouldAutoScroll, setShouldAutoScroll] = useState(true);
   const [userScrolledDuringStream, setUserScrolledDuringStream] = useState(false);
 
-  const isNearBottom = () => {
+  const isNearBottom = useCallback(() => {
     if (!containerRef.current) return false;
     const container = containerRef.current;
     return container.scrollHeight - container.scrollTop - container.clientHeight < 100;
-  };
+  }, [containerRef]);
 
-  const scrollToBottom = (isStreaming: boolean = false) => {
+  const scrollToBottom = useCallback((isStreaming: boolean = false) => {
     if (!containerRef.current) return;
     
     if (isStreaming && userScrolledDuringStream) {
@@ -20,14 +20,14 @@ export const useAutoScroll = (containerRef: RefObject<HTMLDivElement>) => {
     if (shouldAutoScroll) {
       containerRef.current.scrollTop = containerRef.current.scrollHeight;
     }
-  };
+  }, [containerRef, userScrolledDuringStream, shouldAutoScroll]);
 
-  const forceScrollToBottom = () => {
+  const forceScrollToBottom = useCallback(() => {
     if (!containerRef.current) return;
     containerRef.current.scrollTop = containerRef.current.scrollHeight;
     setShouldAutoScroll(true); // Réactive l'auto-scroll
     setUserScrolledDuringStream(false); // Réinitialise l'état de scroll utilisateur
-  };
+  }, [containerRef]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -46,7 +46,13 @@ export const useAutoScroll = (containerRef: RefObject<HTMLDivElement>) => {
       container.addEventListener('scroll', handleScroll);
       return () => container.removeEventListener('scroll', handleScroll);
     }
-  }, [containerRef]);
+  }, [containerRef, isNearBottom, shouldAutoScroll]);
+
+  useEffect(() => {
+    if (isNearBottom() && shouldAutoScroll) {
+      scrollToBottom();
+    }
+  }, [isNearBottom, shouldAutoScroll, scrollToBottom]);
 
   const resetStreamingState = () => {
     setUserScrolledDuringStream(false);

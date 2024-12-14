@@ -42,7 +42,7 @@ export default function Home() {
 
   useEffect(() => {
     scrollToBottom();
-  }, [messages]);
+  }, [messages, scrollToBottom]);
 
   // Load previous messages on component mount or when chat ID changes
   useEffect(() => {
@@ -279,7 +279,7 @@ export default function Home() {
             
             {isNewChat && (
               <div className="welcome-message">
-                Besoin d'aide ? Posez-moi vos questions !
+                Besoin d&apos;aide ? Posez-moi vos questions !
               </div>
             )}
             

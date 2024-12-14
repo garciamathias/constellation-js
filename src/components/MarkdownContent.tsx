@@ -1,4 +1,3 @@
-
 'use client';
 
 import { useEffect, useRef } from 'react';
@@ -17,7 +16,7 @@ export default function MarkdownContent({ content, className = '' }: MarkdownCon
     if (contentRef.current && content) {
       renderingService.streamContent(content, contentRef.current);
     }
-  }, [content]);
+  }, [content, renderingService]);
 
   return <div ref={contentRef} className={className} />;
 }
