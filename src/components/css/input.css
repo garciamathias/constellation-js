@@ -109,7 +109,7 @@ textarea::placeholder {
 /* Styles pour l'input centré */
 .input-container.centered {
     position: fixed;
-    top: 66%;
+    top: 64%;
     transform: translateY(-50%);
     background: none;
     transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
@@ -124,9 +124,10 @@ textarea::placeholder {
 
 .welcome-message {
     text-align: center;
-    margin-top: 330px;
-    color: rgba(255, 255, 255, 0.8);
+    margin-top: 320px;
+    color: rgba(255, 255, 255);
     font-size: 30px; /* Changed from 1.5rem to 24px */
+    font-weight: 500;
     opacity: 0;
     transform: translateY(20px);
     animation: fadeInUp 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;

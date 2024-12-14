@@ -64,13 +64,6 @@ export default function Home() {
     loadMessages();
   }, [currentChatId, user]);
 
-  // Supprimer complètement cet useEffect car nous ne voulons plus de création automatique
-  // useEffect(() => {
-  //   if (user && !currentChatId) {
-  //     createNewChat();
-  //   }
-  // }, [user]);
-
   // Modifier la fonction createNewChat pour inclure le premier message
   const createNewChat = async (firstMessage: string) => {
     if (!user) return;
@@ -286,7 +279,7 @@ export default function Home() {
             
             {isNewChat && (
               <div className="welcome-message">
-                Besoin d'aide ? Posez moi une question !
+                Besoin d'aide ? Posez-moi vos questions !
               </div>
             )}
             

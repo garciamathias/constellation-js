@@ -96,22 +96,26 @@ export const ChatList = ({ userId, onChatSelect, currentChatId, refreshTrigger, 
         </button>
       </div>
       
-      <div className={`chat-list ${isOpen ? 'open' : 'closed'}`}>
+      <div className={`chat-list ${isOpen ? '' : 'closed'}`}>
         <div className="chat-list-content">
-          <h2>Conversations</h2>
-          <div className="chat-items">
-            {mounted && chats.map((chat) => (
-              <div
-                key={chat.id}
-                className={`chat-item ${chat.id === currentChatId ? 'active' : ''}`}
-                onClick={() => onChatSelect(chat.id)}
-              >
-                <span className="chat-title">{chat.title}</span>
-                <span className="chat-date">
-                  {mounted ? formatDate(chat.created_at) : ''}
-                </span>
-              </div>
-            ))}
+          <div className="chat-list-header">
+            Conversations
+          </div>
+          <div className="chat-items-container">
+            <div className="chat-items">
+              {chats.map((chat) => (
+                <div
+                  key={chat.id}
+                  className={`chat-item ${chat.id === currentChatId ? 'active' : ''}`}
+                  onClick={() => onChatSelect(chat.id)}
+                >
+                  <span className="chat-title">{chat.title}</span>
+                  <span className="chat-date">
+                    {mounted ? formatDate(chat.created_at) : ''}
+                  </span>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </div>
