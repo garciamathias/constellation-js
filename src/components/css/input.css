@@ -105,3 +105,52 @@ textarea::placeholder {
     color: rgb(149, 149, 149);
     font-size: 12px;
 }
+
+/* Styles pour l'input centré */
+.input-container.centered {
+    position: fixed;
+    top: 66%;
+    transform: translateY(-50%);
+    background: none;
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    padding: 20px 0;
+}
+
+.input-container.bottom {
+    position: relative;
+    transform: translateY(0);
+    animation: slideToBottom 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.welcome-message {
+    text-align: center;
+    margin-top: 330px;
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 30px; /* Changed from 1.5rem to 24px */
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeInUp 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes slideToBottom {
+    0% {
+      transform: translateY(-100%);
+      opacity: 1;
+    }
+    100% {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+  
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

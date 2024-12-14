@@ -27,6 +27,7 @@ export default function Home() {
   const router = useRouter();
   const [currentChatId, setCurrentChatId] = useState<string | null>(null);
   const [refreshChatList, setRefreshChatList] = useState(0);
+  const [isNewChat, setIsNewChat] = useState(true);
 
   useEffect(() => {
     if (!loading) {
@@ -155,6 +156,7 @@ export default function Home() {
     setIsLoading(true);
     currentMessageRef.current = '';
     forceScrollToBottom();
+    setIsNewChat(false);
 
     try {
       let chatId = currentChatId;
@@ -245,6 +247,7 @@ export default function Home() {
     setCurrentChatId(null);
     setMessages([]);
     setInput('');
+    setIsNewChat(true);
   };
 
   if (loading) {
@@ -268,8 +271,7 @@ export default function Home() {
         />
         <div className="chat-main">
           <div id="chat-box" className="chat-box" ref={messageContainerRef}>
-            
-            {messages.map((msg, index) => (
+            {!isNewChat && messages.map((msg, index) => (
               <div key={index} className={`message-container ${msg.role}-container`}>
                 {msg.role === 'assistant' && (
                   <div className="message-logo">
@@ -281,6 +283,12 @@ export default function Home() {
                 </div>
               </div>
             ))}
+            
+            {isNewChat && (
+              <div className="welcome-message">
+                Besoin d'aide ? Posez moi une question !
+              </div>
+            )}
             
             {isLoading && !isStreaming && (
               <div className="message-container assistant-container reflection-message">
@@ -294,7 +302,7 @@ export default function Home() {
             )}
           </div>
           
-          <div className="input-container">
+          <div className={`input-container ${isNewChat ? 'centered' : 'bottom'}`}>
             <div className="input-wrapper">
               <textarea
                 value={input}

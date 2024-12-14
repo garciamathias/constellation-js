@@ -41,6 +41,7 @@
     /* Améliorer les transitions */
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     transform-origin: left center;
+    position: relative; /* Ajouté pour le positionnement de l'input centré */
 }
 
 .chat-box {
@@ -49,11 +50,13 @@
     padding: 5px 16px;
     width: 100%;
     max-width: 900px;
-    margin: 70px auto 0;
+    margin: 0 auto;
     box-sizing: border-box;
     word-wrap: break-word;
     overflow-x: hidden;
     position: relative; /* Pour le positionnement absolu des logos */
+    display: flex;
+    flex-direction: column;
 }
 
 /* Supprimer ou modifier les media queries existantes pour .chat-box */
@@ -281,6 +284,7 @@
     width: calc(100% - 280px);
     margin-left: 280px;
     /* Supprimer les calculs complexes et utiliser transform pour une meilleure performance */
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* État par défaut (sidebar fermée) */
