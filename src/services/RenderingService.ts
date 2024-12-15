@@ -21,7 +21,13 @@ export class RenderingService {
             .replace(/\$\$([\s\S]*?)\$\$/g, (match, formula) => 
                 `@@LATEX_DISPLAY@@${encodeURIComponent(formula)}@@`)
             .replace(/\$([\s\S]*?)\$/g, (match, formula) => 
-                `@@LATEX_INLINE@@${encodeURIComponent(formula)}@@`);
+                `@@LATEX_INLINE@@${encodeURIComponent(formula)}@@`)
+            // Nouvelle règle pour capturer (sequence)_index
+            .replace(/\(([\s\S]*?)\)_\{([^}]*)\}/g, (match, sequence, index) => 
+                `@@LATEX_INLINE@@(${sequence})_{${index}}@@`)
+            // Ancienne règle pour ((expr){ensemble})
+            .replace(/\(\(([\s\S]*?)\){([^}]*)}\)/g, (match, formula, set) => 
+                `@@LATEX_INLINE@@${encodeURIComponent(`${formula}_{${set}}`)}@@`);
     }
 
     private restoreLatexFormulas(content: string): string {
@@ -33,7 +39,7 @@ export class RenderingService {
     }
 
     private containsLatex(content: string): boolean {
-        return /\\\[|\\\]|\\\(|\\\)|\$\$|\$/g.test(content);
+        return /\\\[|\\\]|\\\(|\\\)|\$\$|\$|\(\(.*\)\{.*\}\)|\([^)]+\)_\{[^}]+\}/g.test(content);
     }
 
     private async typeset(element: HTMLElement) {
