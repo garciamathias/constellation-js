@@ -196,11 +196,13 @@
     overflow-x: auto;
     white-space: pre-wrap;
     word-wrap: break-word;
+    font-size: 15px; /* Réduction de la taille de police pour les blocs de code */
 }
 
 .message code {
     white-space: pre-wrap;
     word-wrap: break-word;
+    font-size: 15px; /* Réduction de la taille de police pour le code en ligne */
 }
 
 /* Ajuster la position du logo pour les petits écrans */
