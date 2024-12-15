@@ -37,8 +37,8 @@
 
     /* Sidebar et Navigation */
     --sidebar-bg: rgba(32, 32, 32, 0.3);
-    --sidebar-item-bg: rgba(255, 255, 255, 0.05);
-    --sidebar-item-hover: rgba(255, 255, 255, 0.1);
+    --sidebar-item-bg: rgba(255, 255, 255, 0.020);
+    --sidebar-item-hover: rgba(255, 255, 255, 0.070);
     --sidebar-item-active: rgba(255, 255, 255, 0.15);
     --sidebar-text: rgba(255, 255, 255, 0.9);
     --sidebar-text-secondary: rgba(255, 255, 255, 0.5);
